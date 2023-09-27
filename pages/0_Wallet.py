@@ -25,7 +25,7 @@ def hierarchical_deterministic_wallet(symbol): return HDWallet(symbol, get_crypt
 
 
 def mnemonic_phrase():
-    lang = st.sidebar.text_input('Language', 'english')
+    lang = st.sidebar.text_input('Language', 'english').lower()
     str = st.sidebar.select_slider('Security Strength', (128, 256), 128)
     mnem = utils.generate_mnemonic(lang, str)
     mnemonic = st.text_input('Secret Words', mnem)
