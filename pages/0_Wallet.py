@@ -35,6 +35,7 @@ def mnemonic_phrase():
 def display_wallet():
     mnemonic = st.sidebar.text_input('Secret Words')
     addr = st.sidebar.number_input('Address', 0, None, 0, 1)
+    st.sidebar.divider()
     derivation = Derivation(f"m/44'/0'/0'/0/{addr}")
     
     if not mnemonic: mnemonic = mnemonic_phrase()
@@ -42,13 +43,13 @@ def display_wallet():
     hdwallet = hdwallet.from_mnemonic(mnemonic)
     st.write(hdwallet.from_path(derivation).dumps())
 
-    
 
 def setup():
     st.set_page_config(page_title='Wallet', page_icon='💳')
     st.write('# Wallet 💳')
     st.divider()
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
+    if st.sidebar.button('REFRESH'): st.rerun()
     display_wallet()
 
 

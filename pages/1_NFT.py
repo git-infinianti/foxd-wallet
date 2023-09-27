@@ -16,6 +16,10 @@ from streamlit.logger import get_logger
 
 
 LOGGER = get_logger(__name__)
+ipfs_url = r'https://ipfs.io/ipfs/'
+
+def display_nft():
+    term = st.sidebar.text_input('Search for NFT')
 
 
 def setup():
@@ -23,6 +27,8 @@ def setup():
     st.write('# NFT 📝')
     st.divider()
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
+    if st.sidebar.button('REFRESH'): st.rerun()
+    display_nft()
 
 
 def nft():

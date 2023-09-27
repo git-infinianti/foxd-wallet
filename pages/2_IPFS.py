@@ -18,11 +18,18 @@ from streamlit.logger import get_logger
 LOGGER = get_logger(__name__)
 
 
+def upload_nft():
+    filetypes = ['jpeg', 'jpg', 'png']
+    st.sidebar.file_uploader('NFT', filetypes)
+
+
 def setup():
     st.set_page_config(page_title='IPFS', page_icon='🗃️')
     st.write('# IPFS 🗃️')
     st.divider()
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
+    if st.sidebar.button('REFRESH'): st.rerun()
+    upload_nft()
 
 
 def ipfs():
