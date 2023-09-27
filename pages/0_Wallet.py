@@ -25,20 +25,20 @@ def hierarchical_deterministic_wallet(symbol): return HDWallet(symbol, get_crypt
 
 
 def mnemonic_phrase():
-    mnem = utils.generate_mnemonic()
+    lang = st.sidebar.text_input('Language', 'english')
+    str = st.sidebar.number_input('Security Strength', 128, 256, 'min', 128)
+    mnem = utils.generate_mnemonic(lang, str)
     mnemonic = st.text_input('Secret Words', mnem)
-    if not mnemonic: mnemonic = mnem
     st.divider()
     return mnemonic
 
 
 def display_wallet():
     mnemonic = st.sidebar.text_input('Secret Words')
+    if not mnemonic: mnemonic = mnemonic_phrase()
     addr = st.sidebar.number_input('Address', 0, None, 0, 1)
     st.sidebar.divider()
     derivation = Derivation(f"m/44'/0'/0'/0/{addr}")
-    
-    if not mnemonic: mnemonic = mnemonic_phrase()
     hdwallet = hierarchical_deterministic_wallet('FOXD')
     hdwallet = hdwallet.from_mnemonic(mnemonic)
     st.write(hdwallet.from_path(derivation).dumps())
@@ -49,7 +49,6 @@ def setup():
     st.write('# Wallet 💳')
     st.divider()
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
-    if st.sidebar.button('REFRESH'): st.rerun()
     display_wallet()
 
 

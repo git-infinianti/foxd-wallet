@@ -29,7 +29,6 @@ def upload_nft():
         return cid
 
 
-
 def setup():
     st.set_page_config(page_title='IPFS', page_icon='🗃️')
     st.write('# IPFS 🗃️')
