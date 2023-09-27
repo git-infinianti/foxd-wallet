@@ -34,7 +34,7 @@ def mnemonic_phrase():
 
 def display_wallet():
     mnemonic = st.sidebar.text_input('Secret Words')
-    path = st.sidebar.slider('Path')
+    path = st.sidebar.slider('Address', 0, 1000, 0, 1)
     derivation = Derivation(f"m/44'/0'/0'/0/{path}")
     
     if not mnemonic: mnemonic = mnemonic_phrase()
