@@ -62,8 +62,7 @@ def setup():
 
 
 def run():
-    allowed_filetypes = ['png', 'jpg', 'jpeg']
-    uploaded_files = st.sidebar.file_uploader('Upload File(s)', allowed_filetypes, True, st.session_state['key'])
+    uploaded_files = st.sidebar.file_uploader('Upload File(s)', 'png', True, st.session_state['key'])
     for f in uploaded_files:
         data = BytesIO(f.read())
         im = Image.open(data)
