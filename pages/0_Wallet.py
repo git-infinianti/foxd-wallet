@@ -13,15 +13,43 @@
 # limitations under the License.
 import streamlit as st
 from streamlit.logger import get_logger
+from hdwallet import utils, HDWallet
+from hdwallet.derivations import Derivation
+from hdwallet.cryptocurrencies import get_cryptocurrency
 
 
 LOGGER = get_logger(__name__)
 
 
+def hierarchical_deterministic_wallet(symbol): return HDWallet(symbol, get_cryptocurrency(symbol))
+
+
+def mnemonic_phrase():
+    mnem = utils.generate_mnemonic()
+    mnemonic = st.text_input('Secret Words', mnem)
+    if not mnemonic: mnemonic = mnem
+    st.divider()
+    return mnemonic
+
+
+def display_wallet():
+    mnemonic = st.sidebar.text_input('Secret Words')
+    path = st.sidebar.slider('Path')
+    derivation = Derivation(f"m/44'/0'/0'/0/{path}")
+    
+    if not mnemonic: mnemonic = mnemonic_phrase()
+    hdwallet = hierarchical_deterministic_wallet('FOXD')
+    hdwallet = hdwallet.from_mnemonic(mnemonic)
+    st.write(hdwallet.from_path(derivation).dumps())
+
+    
+
 def setup():
     st.set_page_config(page_title='Wallet', page_icon='💳')
     st.write('# Wallet 💳')
+    st.divider()
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
+    display_wallet()
 
 
 def wallet():

@@ -21,6 +21,7 @@ LOGGER = get_logger(__name__)
 def setup():
     st.set_page_config(page_title='IPFS', page_icon='🗃️')
     st.write('# IPFS 🗃️')
+    st.divider()
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
 
 

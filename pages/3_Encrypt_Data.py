@@ -21,6 +21,7 @@ LOGGER = get_logger(__name__)
 def setup():
     st.set_page_config(page_title='Encrypt Data', page_icon='🔐')
     st.write('# Encrypter 🔏🔐')
+    st.divider()
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
 
 
