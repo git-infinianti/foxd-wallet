@@ -35,12 +35,12 @@ def mnemonic_phrase():
 
 def display_wallet():
     mnemonic = st.sidebar.text_input('Secret Words')
-    if not mnemonic: mnemonic = mnemonic_phrase()
+    if not mnemonic: st.sidebar.divider(); mnemonic = mnemonic_phrase()
     addr = st.sidebar.number_input('Address', 0, None, 0, 1)
-    st.sidebar.divider()
     derivation = Derivation(f"m/44'/0'/0'/0/{addr}")
     hdwallet = hierarchical_deterministic_wallet('FOXD')
-    hdwallet = hdwallet.from_mnemonic(mnemonic)
+    password = st.sidebar.text_input('Passphrase')
+    hdwallet = hdwallet.from_mnemonic(mnemonic, passphrase=password)
     st.write(hdwallet.from_path(derivation).dumps())
 
 
