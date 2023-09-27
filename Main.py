@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import torch
+# import torch
+# import torchvision
+import tempfile
+import zipfile
 import numpy as np
 
 import streamlit as st
@@ -22,41 +25,59 @@ import uuid
 from io import BytesIO
 from PIL import Image
 
+import torch
+from torchvision import transforms
+
 LOGGER = get_logger(__name__)
+
+
+def image_to_tensor(image): 
+    if torch.cuda.is_available(): return torch.tensor(
+        image.getdata(), 
+        dtype=torch.uint8, 
+        device=torch.cuda.current_device()
+    )
+    return torch.tensor(image.getdata(), dtype=torch.uint8)
+
+def items_from_tensor(tensor):
+    for t in tensor:
+        if t: yield t.item()
 
 def setup():
     session_id = str(uuid.uuid4())
-    if "key" not in st.session_state: st.session_state["key"] = session_id
+    if 'key' not in st.session_state: st.session_state['key'] = session_id
     st.set_page_config(
-        page_title="Foxdcoin Wallet",
-        page_icon="👋",
-        initial_sidebar_state="expanded",
+        page_title='Foxdcoin Wallet',
+        page_icon='👋',
+        initial_sidebar_state='expanded',
     )
-    st.write("# Welcome to Foxdcoin! 👋")
+    st.write('# Welcome to Foxdcoin! 👋')
     st.markdown(
-        "<style> footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>",
+        '<style> footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>',
         unsafe_allow_html=True,
     )
-    if st.sidebar.button('clear'):
-        st.session_state["key"] = session_id
+    if st.sidebar.button('CLEAR'):
+        st.session_state['key'] = session_id
         st.experimental_rerun()
+    st.sidebar.markdown('---')
 
 def run():
-    setup()
-    uploaded_files = st.sidebar.file_uploader('Upload File(s)', 'png', True, st.session_state["key"])
+    uploaded_files = st.sidebar.file_uploader('Upload File(s)', 'png', True, st.session_state['key'])
+    
     for f in uploaded_files:
-        im = Image.open(BytesIO(f.read()))
+        data = BytesIO(f.read())
+        im = Image.open(data)
         r = im.getchannel('R')
         g = im.getchannel('G')
         b = im.getchannel('B')
         a = im.getchannel('A')
-        
-        channel = []
-        def gid(image): return image.getdata()
-        for img in (r,g,b,a): 
-            channel.append(gid(img))
-            st.image(img)
-        
-
+        st.image(chan := [r,g,b,a])
+        itensors = (image_to_tensor(img) for img in chan)
+        tensors = (items_from_tensor(tensor) for tensor in itensors)
+        for t in itensors:
+            with open(f'dataset/{f.name}_tensor.tnsr', "wb") as f:
+                f.write(bytes(t))
+                st.success("Image converted successfully!")
 if __name__ == "__main__":
+    setup()
     run()
