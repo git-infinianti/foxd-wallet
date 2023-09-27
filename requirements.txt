@@ -1,8 +1,7 @@
-torch
-torchvision
 streamlit
 altair
 numpy
 pandas
 pydeck
 rembg
+git+https://github.com/git-infinianti/python-hdwallet

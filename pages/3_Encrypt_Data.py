@@ -19,14 +19,11 @@ LOGGER = get_logger(__name__)
 
 
 def setup():
-    st.set_page_config(page_title='Foxdcoin Wallet', page_icon='👋', initial_sidebar_state='expanded')
-    st.write('# Welcome to Foxdcoin! 👋')
+    st.set_page_config(page_title='Encrypt Data', page_icon='🔐')
+    st.write('# Encrypter 🔏🔐')
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
 
 
-def run():
+def encrypt_data():
     setup()
-
-
-if __name__ == "__main__":
-    run()
+encrypt_data()
