@@ -132,7 +132,7 @@ def main():
             with zipfile.ZipFile(tmp_zip, "w") as z:
                 for img, path, data in nobg_images:
                     with tempfile.NamedTemporaryFile() as fp:
-                        img.save(fp.name, format="PNG")
+                        img.save(f'{fp.name.split(".")[0]}_nobg', format="PNG")
                         z.write(
                             fp.name,
                             arcname=path.name,
