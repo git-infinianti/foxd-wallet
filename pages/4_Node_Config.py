@@ -19,14 +19,14 @@ LOGGER = get_logger(__name__)
 
 
 def generate_config():
-    testnet = st.toggle('testnet', False)
-    regtest = st.toggle('regtest', False)
-    proxy = st.toggle('proxy', False)
-    bind = st.toggle('bind', False)
-    whitebind = st.toggle('whitebind', False)
-    addnode = st.toggle('addnode', False)
-    connect = st.toggle('connect', False)
-    maxconnections = st.toggle('maxconnections', False)
+    testnet = st.sidebar.toggle('testnet', False)
+    regtest = st.sidebar.toggle('regtest', False)
+    proxy = st.sidebar.toggle('proxy', False)
+    bind = st.sidebar.toggle('bind', False)
+    whitebind = st.sidebar.toggle('whitebind', False)
+    addnode = st.sidebar.toggle('addnode', False)
+    connect = st.sidebar.toggle('connect', False)
+    maxconnections = st.sidebar.toggle('maxconnections', False)
 
 
 def setup():
