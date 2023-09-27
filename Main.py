@@ -57,7 +57,7 @@ def setup():
     utils.load_script(fname)
     if st.sidebar.button('CLEAR'):
         st.session_state['key'] = session_id
-        st.experimental_rerun()
+        st.rerun()
     st.sidebar.divider()
 
 

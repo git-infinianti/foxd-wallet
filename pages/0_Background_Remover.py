@@ -34,7 +34,7 @@ def build_ui():
 
     if st.sidebar.button("CLEAR"):
         st.session_state["key"] = session_id
-        st.experimental_rerun()
+        st.rerun()
 
     st.sidebar.markdown("---")
 
