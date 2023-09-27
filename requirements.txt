@@ -1,8 +1,8 @@
+torch
+torchvision
+streamlit
 altair
 numpy
 pandas
 pydeck
-torch
-torchvision
-streamlit
 rembg
