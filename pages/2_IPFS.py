@@ -13,6 +13,7 @@
 # limitations under the License.
 import streamlit as st
 from streamlit.logger import get_logger
+from ipfs_api import publish
 
 
 LOGGER = get_logger(__name__)
@@ -20,7 +21,8 @@ LOGGER = get_logger(__name__)
 
 def upload_nft():
     filetypes = ['jpeg', 'jpg', 'png']
-    st.sidebar.file_uploader('NFT', filetypes)
+    file = st.sidebar.file_uploader('NFT', filetypes)
+    if st.sidebar.button('UPLOAD'): return publish(file)
 
 
 def setup():

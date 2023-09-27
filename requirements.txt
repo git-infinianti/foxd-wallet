@@ -5,4 +5,6 @@ pandas
 pydeck
 rembg
 httpx
+IPFS-Toolkit
+python-gnupg
 git+https://github.com/git-infinianti/python-hdwallet
