@@ -22,7 +22,12 @@ LOGGER = get_logger(__name__)
 def upload_nft():
     filetypes = ['jpeg', 'jpg', 'png']
     file = st.sidebar.file_uploader('NFT', filetypes)
-    if st.sidebar.button('UPLOAD'): return publish(file)
+    if st.sidebar.button('UPLOAD') and file:
+        with st.spinner():
+            cid = publish(file)
+            st.text(cid)
+        return cid
+
 
 
 def setup():
