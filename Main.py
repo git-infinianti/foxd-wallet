@@ -18,6 +18,7 @@ import tempfile
 import zipfile
 import numpy as np
 
+import utils
 import streamlit as st
 from streamlit.logger import get_logger
 
@@ -39,31 +40,30 @@ def image_to_tensor(image):
     )
     return torch.tensor(image.getdata(), dtype=torch.uint8)
 
+
 def items_from_tensor(tensor):
     for t in tensor:
         if t: yield t.item()
 
+
 def setup():
     session_id = str(uuid.uuid4())
     if 'key' not in st.session_state: st.session_state['key'] = session_id
-    st.set_page_config(
-        page_title='Foxdcoin Wallet',
-        page_icon='👋',
-        initial_sidebar_state='expanded',
-    )
+    st.set_page_config(page_title='Foxdcoin Wallet', page_icon='👋', initial_sidebar_state='expanded')
     st.write('# Welcome to Foxdcoin! 👋')
-    st.markdown(
-        '<style> footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>',
-        unsafe_allow_html=True,
-    )
+    st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
+
+    fname = ''
+    utils.load_script(fname)
     if st.sidebar.button('CLEAR'):
         st.session_state['key'] = session_id
         st.experimental_rerun()
-    st.sidebar.markdown('---')
+    st.sidebar.divider()
+
 
 def run():
-    uploaded_files = st.sidebar.file_uploader('Upload File(s)', 'png', True, st.session_state['key'])
-    
+    allowed_filetypes = ['png', 'jpg', 'jpeg']
+    uploaded_files = st.sidebar.file_uploader('Upload File(s)', allowed_filetypes, True, st.session_state['key'])
     for f in uploaded_files:
         data = BytesIO(f.read())
         im = Image.open(data)
@@ -74,10 +74,12 @@ def run():
         st.image(chan := [r,g,b,a])
         itensors = (image_to_tensor(img) for img in chan)
         tensors = (items_from_tensor(tensor) for tensor in itensors)
-        for t in itensors:
-            with open(f'dataset/{f.name}_tensor.tnsr', "wb") as f:
-                f.write(bytes(t))
-                st.success("Image converted successfully!")
+        # for t in itensors:
+        #     with open(f'dataset/{f.name}_tensor.tnsr', "wb") as f:
+        #         f.write(bytes(t))
+        #         st.success("Image converted successfully!")
+
+
 if __name__ == "__main__":
     setup()
     run()

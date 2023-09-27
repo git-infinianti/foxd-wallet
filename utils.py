@@ -26,3 +26,13 @@ def show_code(demo):
         st.markdown("## Code")
         sourcelines, _ = inspect.getsourcelines(demo)
         st.code(textwrap.dedent("".join(sourcelines[1:])))
+
+
+def load_script(filename):
+    with open(f'script/{filename}.js') as f:
+        st.markdown(f'<script>{f.read()}</script>', True) 
+
+
+def load_style(filename):
+    with open('style/{filename}.css') as f:
+        st.markdown(f'<style>{f.read()}</style>', True)
