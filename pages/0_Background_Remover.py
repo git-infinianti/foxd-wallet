@@ -9,9 +9,9 @@ import streamlit as st
 from PIL import Image
 
 # from loguru import logger
-from rembg import remove
+from rembg import remove, new_session
 
-
+SESSION = new_session('u2net_human_seg')
 MAX_FILES = int(5)  # number of images to be processed once
 MULTIPLE_IMAGES_ALLOWED = True
 ALLOWED_TYPES = ["png", "jpg", "jpeg"]
@@ -19,7 +19,7 @@ ALLOWED_TYPES = ["png", "jpg", "jpeg"]
 
 def remove_bg(input_data, path):
     """Remove background from an image using rembg."""
-    result = remove(input_data)
+    result = remove(input_data, session=SESSION)
     img = Image.open(io.BytesIO(result)).convert("RGBA")
     if Path(path).suffix != ".png":
         img.LOAD_TRUNCATED_IMAGES = True
