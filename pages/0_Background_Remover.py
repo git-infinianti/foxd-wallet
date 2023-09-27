@@ -12,7 +12,7 @@ from PIL import Image
 from rembg import remove
 
 
-MAX_FILES = int(150)  # number of images to be processed once
+MAX_FILES = int(5)  # number of images to be processed once
 MULTIPLE_IMAGES_ALLOWED = True
 ALLOWED_TYPES = ["png", "jpg", "jpeg"]
 
@@ -127,42 +127,28 @@ def main():
             result.image(res[0], caption="Result")
 
     # multiple results will be downloaded as zip file
-    # if len(nobg_images) > 1:
-    #     with io.BytesIO() as tmp_zip:
-    #         with zipfile.ZipFile(tmp_zip, "w") as z:
-    #             with tempfile.NamedTemporaryFile() as fp:
-    #                 img.save(fp.name, format="PNG")
-    #                 z.write(
-    #                     fp.name,
-    #                     arcname=path.name,
-    #                     compress_type=zipfile.ZIP_DEFLATED,
-    #                 )
-    #         zip_data = tmp_zip.getvalue()
-    # 
-    #    download_btn.download_button(
-    #        label=f"Download as ZIP",
-    #        data=zip_data,
-    #        file_name=f"results_{int(time.time())}.zip",
-    #        mime="application/zip",
-    #        key="btn",
-    #    )
-    # else:
-    try:
-        def images():
-            with io.BytesIO() as byte:
+    if len(nobg_images) > 1:
+        with io.BytesIO() as tmp_zip:
+            with zipfile.ZipFile(tmp_zip, "w") as z:
                 for img, path, data in nobg_images:
-                    file_name = f"D:\Pictures\Gallery\Flowery Vagina\{path.stem}_nobg.png"
-                    with open(file_name, 'w') as f:
-                        img.save(f.name, format="PNG")
-                return byte.getvalue() 
-        if len(nobg_images) > 1:
-            download_btn.download_button(
-                label=f"Download Results",
-                data=images(),
-                file_name="",
-                key="btn",
-            )
-        else:
+                    with tempfile.NamedTemporaryFile() as fp:
+                        img.save(fp.name, format="PNG")
+                        z.write(
+                            fp.name,
+                            arcname=path.name,
+                            compress_type=zipfile.ZIP_DEFLATED,
+                        )
+            zip_data = tmp_zip.getvalue()
+
+        download_btn.download_button(
+            label=f"Download as ZIP",
+            data=zip_data,
+            file_name=f"results_{int(time.time())}.zip",
+            mime="application/zip",
+            key="btn",
+        )
+    else:
+        try:
             output = nobg_images[0]
             download_btn.download_button(
                 label="Download Result",
@@ -171,10 +157,10 @@ def main():
                 mime="image/png",
                 key="btn",
             )
-    except IndexError:
-        st.error("No more images to process!")
-    finally:
-        st.session_state["key"] = session_id
+        except IndexError:
+            st.error("No more images to process!")
+        finally:
+            st.session_state["key"] = session_id
 
     time.sleep(3)
     progress_bar.empty()
