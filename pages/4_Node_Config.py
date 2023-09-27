@@ -13,41 +13,31 @@
 # limitations under the License.
 import streamlit as st
 from streamlit.logger import get_logger
-from ipfs_api import publish
 
 
 LOGGER = get_logger(__name__)
 
 
-def asset(icon, name, description, asset_type, restrictions, keywords): return {
-		'icon': img_file(icon),
-		'name': name,
-		'description': description,
-		'asset_type': asset_type,
-		'restrictions': restrictions,
-		'keywords': keywords
-	}
-
-
-def upload_nft():
-    filetypes = ['jpeg', 'jpg', 'png']
-    file = st.sidebar.file_uploader('NFT', filetypes)
-    if st.sidebar.button('UPLOAD') and file:
-        with st.spinner():
-            cid = publish(file)
-            st.text(cid)
-        return cid
+def generate_config():
+    testnet = st.toggle('testnet', False)
+    regtest = st.toggle('regtest', False)
+    proxy = st.toggle('proxy', False)
+    bind = st.toggle('bind', False)
+    whitebind = st.toggle('whitebind', False)
+    addnode = st.toggle('addnode', False)
+    connect = st.toggle('connect', False)
+    maxconnections = st.toggle('maxconnections', False)
 
 
 def setup():
-    st.set_page_config(page_title='IPFS', page_icon='🗃️')
-    st.write('# IPFS 🗃️')
+    st.set_page_config(page_title='Node Config', page_icon='🧰')
+    st.write('# Node Configurator 🧰')
     st.divider()
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
     if st.sidebar.button('REFRESH'): st.rerun()
-    upload_nft()
+    generate_config()
 
 
-def ipfs():
+def node_config():
     setup()
-ipfs()
+node_config()
