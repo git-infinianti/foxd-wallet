@@ -3,5 +3,6 @@ numpy
 pandas
 pydeck
 torch
+torchvision
 streamlit
 rembg
