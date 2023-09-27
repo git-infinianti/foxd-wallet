@@ -34,8 +34,8 @@ def mnemonic_phrase():
 
 def display_wallet():
     mnemonic = st.sidebar.text_input('Secret Words')
-    path = st.sidebar.slider('Address', 0, 1000, 0, 1)
-    derivation = Derivation(f"m/44'/0'/0'/0/{path}")
+    addr = st.sidebar.number_input('Address', 0, None, 0, 1)
+    derivation = Derivation(f"m/44'/0'/0'/0/{addr}")
     
     if not mnemonic: mnemonic = mnemonic_phrase()
     hdwallet = hierarchical_deterministic_wallet('FOXD')
