@@ -14,14 +14,15 @@
 from os import getenv
 from io import BytesIO
 from dotenv import find_dotenv, load_dotenv
-from base64 import b64encode
 import streamlit as st
 from streamlit.logger import get_logger
 import streamlit_tags as stt
-from httpx import post, Headers
+from httpx import post
 from ipfs_api import publish
 from json import loads
 from PIL import Image
+
+
 if load_dotenv(find_dotenv()): api_key = getenv('DBTOKEN')
 else: api_key = st.secrets['DBTOKEN']
 LOGGER = get_logger(__name__)
@@ -51,9 +52,11 @@ def upload_nft():
         with st.spinner():
             try:
                 cid = publish(file)
+                st.session_state['cid'] = cid
                 st.write(cid)
             except:
                 cid = post(endpoint + '/upload', content=file, headers=auth)
+                st.session_state['cid'] = cid
                 st.write(loads(cid.content)['cid'])
         return cid
 

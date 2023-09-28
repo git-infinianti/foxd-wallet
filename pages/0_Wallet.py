@@ -45,18 +45,21 @@ def load_wallet():
 def display_wallet():
     if load_wallet(): 
         addr = st.sidebar.number_input('Address', 0, None, 'min', 1)
-        mnemonic = st.sidebar.text_input('Secret Words', key='mnemonic')
+        mnemonic = st.sidebar.text_input('Secret Words')
     else: 
         addr = str(st.session_state['loadwallet']['path']).split('/')
         addr = st.sidebar.number_input('Address', 0, None, int(addr[-1]), 1)
         mnemonic = st.session_state['loadwallet']['mnemonic']
-    if not mnemonic: st.sidebar.divider(); mnemonic = mnemonic_phrase()
+    if not mnemonic: 
+        st.sidebar.divider()
+        mnemonic = mnemonic_phrase()
+        st.session_state['loadwallet'] = {'mnemonic': mnemonic}
+    
     derivation = Derivation(f"m/44'/0'/0'/0/{addr}")
     hdwallet = hierarchical_deterministic_wallet('FOXD')
     password = st.sidebar.text_input('Passphrase')
     hdwallet = hdwallet.from_mnemonic(mnemonic, passphrase=password)
     address = hdwallet.from_path(derivation).dumps()
-    
     filename = st.text_input('File Name', f'foxdwallet-{addr}')
     st.download_button('Download', dumps(address), f'{filename}.json', 'application/json')
     st.write(address)
