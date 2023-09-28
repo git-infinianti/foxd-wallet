@@ -11,9 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from os import getenv
 from io import BytesIO
-from dotenv import find_dotenv, load_dotenv
 import streamlit as st
 from streamlit.logger import get_logger
 import streamlit_tags as stt
@@ -23,9 +21,10 @@ from json import loads
 from PIL import Image
 
 
-if load_dotenv(find_dotenv()): api_key = getenv('DBTOKEN')
-else: api_key = st.secrets['DBTOKEN']
 LOGGER = get_logger(__name__)
+
+
+api_key = st.secrets['DBTOKEN']
 headers = {'Authorization': f'Bearer {api_key}', 'Content-Type': 'multipart/form-data'}
 endpoint = r'https://api.web3.storage'
 
@@ -55,7 +54,7 @@ def upload_nft():
                 st.session_state['cid'] = cid
                 st.write(st.session_state['cid'])
             except:
-                ret = post(url=endpoint + '/upload', content=file, headers=headers)
+                ret = post(url=endpoint + '/upload', content=file.read(), headers=headers)
                 cid = loads(ret.content)
                 st.session_state['cid'] = cid
                 st.write(cid)
