@@ -51,7 +51,6 @@ def asset(): return {
 
 def upload_nft():
     filetypes = ['jpeg', 'jpg', 'png']
-    
     loaded_file = st.sidebar.file_uploader('NFT', filetypes)
     if loaded_file: 
         st.image(Image.open(BytesIO(loaded_file.read())))

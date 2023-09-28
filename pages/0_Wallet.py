@@ -22,7 +22,7 @@ from json import dumps, load
 
 
 LOGGER = get_logger(__name__)
-with open('emoji.json') as f: emoji = load(f)
+with open(f'emoji.json') as f: emoji = load(f)
 
 
 def hierarchical_deterministic_wallet(symbol): return HDWallet(symbol, get_cryptocurrency(symbol))
@@ -38,7 +38,7 @@ def mnemonic_phrase():
 
 
 def load_wallet():
-    wallet = st.file_uploader('Open Wallet', type='json')
+    wallet = st.file_uploader('Open Wallet', type=emoji[126])
     if wallet: st.session_state['loadwallet'] = load(wallet); return False
     return True
 
@@ -55,21 +55,22 @@ def display_wallet():
         st.sidebar.divider()
         mnemonic = mnemonic_phrase()
         st.session_state['loadwallet'] = {'mnemonic': mnemonic}
-    
+    number_emotes = [emoji[287], emoji[286], emoji[285], emoji[284], emoji[283], emoji[282], emoji[281], emoji[272], emoji[273], emoji[274]]
     derivation = Derivation(f"m/44'/0'/0'/0/{addr}")
     hdwallet = hierarchical_deterministic_wallet('FOXD')
     password = st.sidebar.text_input('Passphrase')
     hdwallet = hdwallet.from_mnemonic(mnemonic, passphrase=password)
     address = hdwallet.from_path(derivation).dumps()
-    filename = st.text_input('File Name', f'foxdream-{addr}')
-    st.download_button('Download', dumps(address), f'{filename}.json', 'application/json')
+    addr_emote = ''.join([number_emotes[int(a)] for a in str(addr)])
+    filename = st.text_input('File Name', f'{emoji[768]+emoji[474]+emoji[473]+emoji[289]+addr_emote}')
+    st.download_button('Download', dumps(address), f'{filename}.{emoji[126]}', 'application/json')
     st.divider()
     st.write(address)
 
 
 def setup():
     st.set_page_config(page_title='Wallet', page_icon=emoji[126])
-    st.write('# Wallet 💳')
+    st.write(f'# Wallet {emoji[126]}')
     st.divider()
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
     display_wallet()
