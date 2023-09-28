@@ -42,7 +42,7 @@ def encode_image():
 def asset(ftypes): return {
 		'name': st.text_input('Name'),
 		'description': st.text_area('Description'),
-		'asset_type': st.selectbox('Asset Type', ['Main', 'Sub', 'Unique']),
+		'asset_type': st.selectbox('Asset Type', ['Main', 'Sub', 'Unique'], 2),
 		'tags': stt.st_tags(label='Tags', text='Press Enter to Create New Tag'),
         'restrictions': st.multiselect('Restrictions', ['Unissuable']),
         'image': st.file_uploader('Image', ftypes)
@@ -53,11 +53,12 @@ def upload_nft():
     c = 'cid'
     filetypes = ['jpeg', 'jpg', 'png']
     asset_data = asset(filetypes)
+    if tags := asset_data['tags']:
+        for tag in tags:
+            st.sidebar.text_input(tag.capitalize())
     loaded_file = asset_data['image']
     if loaded_file: 
-        if tags := asset_data['tags']:
-            for tag in tags:
-                st.write(tag)
+        
         st.success(f'Image Loaded Successfully {emoji[296]}')
         st.image(Image.open(BytesIO(loaded_file.read())))
     if st.sidebar.button('UPLOAD') and loaded_file:

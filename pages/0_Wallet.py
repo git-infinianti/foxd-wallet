@@ -46,26 +46,42 @@ def load_wallet():
         return False
     return True 
  
+
 def display_wallet():
     if load_wallet(): 
+        acc = st.sidebar.number_input('Account', 0, None, 'min', 1)
         addr = st.sidebar.number_input('Address', 0, None, 'min', 1)
+        chng = st.sidebar.number_input('Change', 0, None, 'min', 1)
         mnemonic = st.sidebar.text_input('Secret Words')
+   
     else: 
-        addr = str(st.session_state['loadwallet']['path']).split('/')
-        addr = st.sidebar.number_input('Address', 0, None, int(addr[-1]), 1)
+        path = str(st.session_state['loadwallet']['path']).split('/')
+        acc = st.sidebar.number_input('Account', 0, None, int(path[3][0]), 1)
+        addr = st.sidebar.number_input('Address', 0, None, int(path[4]), 1)
+        chng = st.sidebar.number_input('Change', 0, None, int(path[5]), 1)
         mnemonic = st.session_state['loadwallet']['mnemonic']
+    
     if not mnemonic: 
         st.sidebar.divider()
         mnemonic = mnemonic_phrase()
         st.session_state['loadwallet'] = {'mnemonic': mnemonic}
-    derivation = Derivation(f"m/44'/0'/0'/0/{addr}")
-    hdwallet = hierarchical_deterministic_wallet('FOXD')
+    
     password = st.sidebar.text_input('Passphrase')
+
+    hdwallet = hierarchical_deterministic_wallet('FOXD')
     hdwallet = hdwallet.from_mnemonic(mnemonic, passphrase=password)
+    
+    derivation = Derivation(f"m/44'/175'/{acc}'/{addr}/{chng}")
     address = hdwallet.from_path(derivation).dumps()
-    number_emotes = [emoji[287], emoji[286], emoji[285], emoji[284], emoji[283], emoji[282], emoji[281], emoji[272], emoji[273], emoji[274]]
+    
+    number_emotes = [
+        emoji[287], emoji[286], emoji[285], emoji[284], emoji[283], 
+        emoji[282], emoji[281], emoji[272], emoji[273], emoji[274]
+    ]
+    acc_emote = ''.join([number_emotes[int(a)] for a in str(acc)])
     addr_emote = ''.join([number_emotes[int(a)] for a in str(addr)])
-    filename = st.text_input('File Name', f'{emoji[768]+addr_emote}')
+    chng_emote = ''.join([number_emotes[int(a)] for a in str(chng)])
+    filename = st.text_input('File Name', f'{emoji[768]+acc_emote}/{addr_emote}/{chng_emote}')
     data_string = dumps(address)
     st.download_button('Download', b64encode(bytes(data_string, 'utf-8')), f'{filename}.{emoji[126]}')
     st.divider()
