@@ -24,7 +24,7 @@ from json import dumps
 if load_dotenv(find_dotenv()): api_key = getenv('DBTOKEN')
 else: api_key = st.secrets['DBTOKEN']
 LOGGER = get_logger(__name__)
-auth = {'Authorization': f'Bearer {b64encode(bytes(api_key, "utf-8"))}'}
+auth = {'Authorization': f'Bearer {api_key}'}
 endpoint = r'https://api.web3.storage'
 
 
