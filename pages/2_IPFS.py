@@ -57,6 +57,7 @@ def upload_nft():
         file_type = loaded_file.name.split('.')
         image_type = 'image/png'
         if file_type[-1] == 'jpg' or file_type[-1] == 'jpeg': image_type = 'image/jpeg'
+    headers['Content-Type'] = image_type
     if st.sidebar.button('UPLOAD') and loaded_file:
         with st.spinner():
             try:
@@ -71,7 +72,8 @@ def upload_nft():
                     st.write(cid)
                 except: print(Exception)
             finally:
-                cid = st.session_state['cid']
+                cid = ''
+                if st.session_state['cid']: cid = st.session_state['cid']
                 return cid
 
 
