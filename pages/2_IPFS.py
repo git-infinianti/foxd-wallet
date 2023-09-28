@@ -22,11 +22,11 @@ from ipfs_api import publish
 from json import dumps
 Headers()
 
-load_dotenv(find_dotenv())
-api_key = getenv('DBTOKEN')
+if load_dotenv(find_dotenv()): api_key = getenv('DBTOKEN')
+else: api_key = st.secrets['DBTOKEN']
 print(api_key)
 LOGGER = get_logger(__name__)
-auth = {'Authorization': f'Bearer {b64encode(bytes(api_key))}'}
+auth = {'Authorization': f'Bearer {b64encode(bytes(api_key, "ascii"))}'}
 endpoint = r'https://api.web3.storage'
 
 
