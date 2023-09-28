@@ -18,7 +18,8 @@ from hdwallet import utils, HDWallet
 from hdwallet.derivations import Derivation
 from hdwallet.cryptocurrencies import get_cryptocurrency
 
-from json import dumps, load
+from json import dumps, load, loads
+from base64 import b64encode, b64decode
 
 
 LOGGER = get_logger(__name__)
@@ -39,10 +40,10 @@ def mnemonic_phrase():
 
 def load_wallet():
     wallet = st.file_uploader('Open Wallet', type=emoji[126])
-    if wallet: st.session_state['loadwallet'] = load(wallet); return False
-    return True
-
-
+    decoded_data = b64decode(wallet.read())
+    if wallet: st.session_state['loadwallet'] = loads(str(decoded_data, 'utf-8')); return False
+    return True 
+ 
 def display_wallet():
     if load_wallet(): 
         addr = st.sidebar.number_input('Address', 0, None, 'min', 1)
@@ -55,18 +56,19 @@ def display_wallet():
         st.sidebar.divider()
         mnemonic = mnemonic_phrase()
         st.session_state['loadwallet'] = {'mnemonic': mnemonic}
-    number_emotes = [emoji[287], emoji[286], emoji[285], emoji[284], emoji[283], emoji[282], emoji[281], emoji[272], emoji[273], emoji[274]]
     derivation = Derivation(f"m/44'/0'/0'/0/{addr}")
     hdwallet = hierarchical_deterministic_wallet('FOXD')
     password = st.sidebar.text_input('Passphrase')
     hdwallet = hdwallet.from_mnemonic(mnemonic, passphrase=password)
     address = hdwallet.from_path(derivation).dumps()
+    number_emotes = [emoji[287], emoji[286], emoji[285], emoji[284], emoji[283], emoji[282], emoji[281], emoji[272], emoji[273], emoji[274]]
     addr_emote = ''.join([number_emotes[int(a)] for a in str(addr)])
     filename = st.text_input('File Name', f'{emoji[768]+emoji[289]+addr_emote}')
-    st.download_button('Download', dumps(address), f'{filename}.{emoji[126]}', 'application/json')
+    data_string = dumps(address)
+    st.download_button('Download', b64encode(bytes(data_string, 'utf-8')), f'{filename}.{emoji[126]}')
     st.divider()
     st.write(address)
-
+    
 
 def setup():
     st.set_page_config(page_title='Wallet', page_icon=emoji[126])
