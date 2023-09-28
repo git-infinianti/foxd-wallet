@@ -60,7 +60,7 @@ def display_wallet():
     password = st.sidebar.text_input('Passphrase')
     hdwallet = hdwallet.from_mnemonic(mnemonic, passphrase=password)
     address = hdwallet.from_path(derivation).dumps()
-    filename = st.text_input('File Name', f'foxdwallet-{addr}')
+    filename = st.text_input('File Name', f'foxdream-{addr}')
     st.download_button('Download', dumps(address), f'{filename}.json', 'application/json')
     st.write(address)
 
