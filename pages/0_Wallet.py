@@ -40,8 +40,9 @@ def mnemonic_phrase():
 
 def load_wallet():
     wallet = st.file_uploader('Open Wallet', type=emoji[126])
-    decoded_data = b64decode(wallet.read())
-    if wallet: st.session_state['loadwallet'] = loads(str(decoded_data, 'utf-8')); return False
+    if wallet: 
+        decoded_data = b64decode(wallet.read())
+        st.session_state['loadwallet'] = loads(decoded_data); return False
     return True 
  
 def display_wallet():
