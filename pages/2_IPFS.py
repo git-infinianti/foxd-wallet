@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from os import getenv
+from io import BytesIO
 from dotenv import find_dotenv, load_dotenv
 from base64 import b64encode
 import streamlit as st
@@ -45,7 +46,7 @@ def asset(): return {
 def upload_nft():
     filetypes = ['jpeg', 'jpg', 'png', 'gif', 'webp']
     file = st.sidebar.file_uploader('NFT', filetypes)
-    st.image(Image.open(file))
+    if file: st.image(Image.open(BytesIO(file)))
     if st.sidebar.button('UPLOAD') and file:
         with st.spinner():
             try:
