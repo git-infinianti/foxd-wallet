@@ -65,15 +65,16 @@ def upload_nft():
                 st.session_state['cid'] = cid
                 st.write(st.session_state['cid'])
                 st.success('Completed Successfully')
-                return cid
+                st.session_state['cid'] = cid
+                return st.session_state['cid']
             except:
                 try:
                     ret = client.put(url=endpoint + '/upload', content=loaded_file)
                     cid = loads(ret.content)
-                    st.session_state['cid'] = cid
                     st.write(cid)
                     st.success('Completed Successfully')
-                    return cid
+                    st.session_state['cid'] = cid
+                    return st.session_state['cid']
                 except: st.error('File Failed to Upload')
 
 
