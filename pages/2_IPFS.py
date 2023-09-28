@@ -22,8 +22,8 @@ from ipfs_api import publish
 from json import dumps
 Headers()
 
-if load_dotenv(find_dotenv()): api_key = getenv('DBTOKEN')
-else: api_key = getenv('DBTOKEN')
+load_dotenv(find_dotenv())
+api_key = getenv('DBTOKEN')
 print(api_key)
 LOGGER = get_logger(__name__)
 auth = {'Authorization': f'Bearer {b64encode(bytes(api_key, "ascii"))}'}
