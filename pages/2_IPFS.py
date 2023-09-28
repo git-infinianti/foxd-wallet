@@ -51,19 +51,19 @@ def asset(): return {
 def upload_nft():
     filetypes = ['jpeg', 'jpg', 'png']
     
-    file = st.sidebar.file_uploader('NFT', filetypes)
-    if file: st.image(Image.open(BytesIO(file.read())))
-    filename_type = file.name.split('.')
-    type = 'image/png'
-    if filename_type[-1] == 'jpg' or filename_type[-1] == 'jpeg': type = 'image/jpeg'
-    if st.sidebar.button('UPLOAD') and file:
+    loaded_file = st.sidebar.file_uploader('NFT', filetypes)
+    if loaded_file: st.image(Image.open(BytesIO(loaded_file.read())))
+    file_type = loaded_file.name.split('.')
+    image_type = 'image/png'
+    if file_type[-1] == 'jpg' or file_type[-1] == 'jpeg': image_type = 'image/jpeg'
+    if st.sidebar.button('UPLOAD') and loaded_file:
         with st.spinner():
             try:
-                cid = publish(file)
+                cid = publish(loaded_file)
                 st.session_state['cid'] = cid
                 st.write(st.session_state['cid'])
             except:
-                ret = client.post(url=endpoint + '/upload', content=f'file=@{file.name};type={type}')
+                ret = client.post(url=endpoint + '/upload', file=f'file=@{loaded_file.name};type={image_type}')
                 cid = loads(ret.content)
                 st.session_state['cid'] = cid
                 st.write(cid)
