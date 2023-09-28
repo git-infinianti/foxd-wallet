@@ -1,4 +1,6 @@
 streamlit
+streamlit-tags
+streamlit-option-menu
 altair
 numpy
 pandas
