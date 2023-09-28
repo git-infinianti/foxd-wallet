@@ -18,7 +18,7 @@ from hdwallet import utils, HDWallet
 from hdwallet.derivations import Derivation
 from hdwallet.cryptocurrencies import get_cryptocurrency
 
-from json import dumps
+from json import dumps, load
 
 
 LOGGER = get_logger(__name__)
@@ -36,8 +36,15 @@ def mnemonic_phrase():
     return mnemonic
 
 
+def load_wallet():
+    wallet = st.file_uploader('Open Wallet', type='json')
+    if wallet: st.session_state['loadwallet'] = load(wallet); return False
+    return True
+
+
 def display_wallet():
-    mnemonic = st.sidebar.text_input('Secret Words', key='mnemonic')
+    if load_wallet(): mnemonic = st.sidebar.text_input('Secret Words', key='mnemonic')
+    else: mnemonic = st.session_state['loadwallet']['mnemonic']
     if not mnemonic: st.sidebar.divider(); mnemonic = mnemonic_phrase()
     addr = st.sidebar.number_input('Address', 0, None, 0, 1)
     derivation = Derivation(f"m/44'/0'/0'/0/{addr}")
@@ -45,7 +52,8 @@ def display_wallet():
     password = st.sidebar.text_input('Passphrase')
     hdwallet = hdwallet.from_mnemonic(mnemonic, passphrase=password)
     address = hdwallet.from_path(derivation).dumps()
-    filename = st.text_input('File Name', f'foxd-address-{addr}')
+    
+    filename = st.text_input('File Name', f'foxdwallet-{addr}')
     st.download_button('Download', dumps(address), f'{filename}.json', 'application/json')
     st.write(address)
 
