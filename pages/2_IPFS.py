@@ -26,7 +26,7 @@ from PIL import Image
 if load_dotenv(find_dotenv()): api_key = getenv('DBTOKEN')
 else: api_key = st.secrets['DBTOKEN']
 LOGGER = get_logger(__name__)
-auth = {'Authorization': f'Bearer {api_key}'}
+headers = {'Authorization': f'Bearer {api_key}', 'Content-Type': 'multipart/form-data'}
 endpoint = r'https://api.web3.storage'
 
 
@@ -55,7 +55,7 @@ def upload_nft():
                 st.session_state['cid'] = cid
                 st.write(st.session_state['cid'])
             except:
-                cid = post(url=endpoint + '/upload', data=file, headers=auth)
+                cid = post(url=endpoint + '/upload', data=file, headers=headers)
                 cid = loads(cid.content)
                 st.session_state['cid'] = cid
                 st.write(cid)
