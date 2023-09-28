@@ -27,52 +27,52 @@ with open('emoji.json') as f: emoji = load(f)
 
 
 api_key = st.secrets['DBTOKEN']
-headers = {
+h = {
     'Authorization': f'Bearer {api_key}', 
     'accept': 'application/json'
 }
 endpoint = 'https://api.web3.storage'
-client = Client(base_url=endpoint, headers=headers)
+client = Client(base_url=endpoint, headers=h)
 
 
 def encode_image():
     pass
 
 
-def asset(): return {
-		'icon': st.file_uploader('Icon'),
-		'name': st.text_input('name'),
-		'description': st.text_input('description'),
-		'asset_type': st.selectbox('Asset Type', ['Unique', 'Rare', 'Common']),
-		'restrictions': st.multiselect('Restrictions', []),
+def asset(ftypes): return {
+		'image': st.file_uploader('Image', ftypes),
+		'name': st.text_input('Name'),
+		'description': st.text_area('Description'),
+		'asset_type': st.selectbox('Asset Type', ['Main', 'Sub', 'Unique']),
+		'restrictions': st.multiselect('Restrictions', ['Unissuable']),
 		'keywords': stt.st_tags()
 	}
 
 
 def upload_nft():
+    c = 'cid'
     filetypes = ['jpeg', 'jpg', 'png']
-    loaded_file = st.sidebar.file_uploader('NFT', filetypes)
+    asset_data = asset(filetypes)
+    loaded_file = asset_data['image']
     if loaded_file: 
-        st.image(Image.open(BytesIO(loaded_file.read())))
         st.success(f'Image Loaded Successfully {emoji[296]}')
+        st.image(Image.open(BytesIO(loaded_file.read())))
     if st.sidebar.button('UPLOAD') and loaded_file:
         with st.spinner():
             try:
-                cid = publish(loaded_file)
+                st.session_state[c] = publish(loaded_file)
+                st.success(f'Uploaded Successfully {emoji[296]}')
+                cid = st.session_state[c]
                 pin(cid)
                 st.code(cid)
-                st.success(f'Uploaded Successfully {emoji[296]}')
-                st.session_state['cid'] = cid
-                return st.session_state['cid']
+                return cid
             except:
                 try:
-                    files = {'file': loaded_file}
-                    ret = client.post('/upload', files=files, headers=headers)
-                    cid = loads(ret.text)
-                    if 'cid' in cid.keys(): st.code(cid['cid'])
+                    ret = client.post('/upload', files={'file': loaded_file})
                     st.success(f'Uploaded Successfully {emoji[296]}')
-                    st.session_state['cid'] = cid
-                    return st.session_state['cid']
+                    st.session_state[c] = loads(ret.text)
+                    if c in (cid := st.session_state[c]).keys(): st.code(cid[c])
+                    return cid
                 except: st.error(f'File Failed to Upload {emoji[292]}')
 
 
@@ -83,7 +83,12 @@ def setup():
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
     
 
+def setup_session_state():
+    st.session_state['cid'] = ''
+
+
 def ipfs():
     setup()
+    setup_session_state()
     upload_nft()
 ipfs()
