@@ -11,25 +11,35 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from os import getenv
+from dotenv import find_dotenv, load_dotenv
+from base64 import b64encode
 import streamlit as st
 from streamlit.logger import get_logger
+import streamlit_tags as stt
+from httpx import post
 from ipfs_api import publish
 
 
+if load_dotenv(find_dotenv()): api_key = getenv('DBTOKEN')
+else: api_key = getenv('DBTOKEN')
+
 LOGGER = get_logger(__name__)
+auth = f'Authorization: Bearer {api_key}'
+endpoint = r'https://api.web3.storage'
 
 
 def encode_image():
     pass
 
 
-def asset(icon, name, description, asset_type, restrictions, keywords): return {
-		'icon': encode_image(icon),
-		'name': name,
-		'description': description,
-		'asset_type': asset_type,
-		'restrictions': restrictions,
-		'keywords': keywords
+def asset(): return {
+		'icon': st.file_uploader('Icon'),
+		'name': st.text_input('name'),
+		'description': st.text_input('description'),
+		'asset_type': st.selectbox('Asset Type', ['Unique', 'Rare', 'Common']),
+		'restrictions': st.multiselect('Restrictions', []),
+		'keywords': stt.st_tags()
 	}
 
 
@@ -38,8 +48,11 @@ def upload_nft():
     file = st.sidebar.file_uploader('NFT', filetypes)
     if st.sidebar.button('UPLOAD') and file:
         with st.spinner():
-            cid = publish(file)
-            st.text(cid)
+            try:
+                cid = publish(file)
+                st.text(cid)
+            except:
+                cid = post(endpoint + '/upload', file, headers=auth)
         return cid
 
 

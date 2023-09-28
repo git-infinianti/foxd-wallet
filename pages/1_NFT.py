@@ -14,10 +14,12 @@
 import streamlit as st
 from streamlit.logger import get_logger
 import streamlit_option_menu as stom
+import streamlit_tags as stt
 
 
 LOGGER = get_logger(__name__)
 ipfs_url = r'https://ipfs.io/ipfs/'
+
 
 def search_nft(): st.sidebar.text_input('Search for NFT')
 
@@ -37,12 +39,12 @@ def setup():
     st.divider()
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
     search_nft()
-    with st.sidebar: selected = stom.option_menu(None, ['Browse', 'Buy', 'Sell'])
-    if selected == 'Browse': browse()
-    if selected == 'Buy': buy()
-    if selected == 'Sell': sell()
 
 
 def nft():
     setup()
+    with st.sidebar: selected = stom.option_menu(None, ['Browse', 'Buy', 'Sell'])
+    if selected == 'Browse': browse()
+    if selected == 'Buy': buy()
+    if selected == 'Sell': sell()
 nft()
