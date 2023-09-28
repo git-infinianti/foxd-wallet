@@ -9,4 +9,5 @@ rembg
 httpx
 IPFS-Toolkit
 python-gnupg
+python-dotenv
 git+https://github.com/git-infinianti/python-hdwallet
