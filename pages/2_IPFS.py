@@ -52,7 +52,7 @@ def upload_nft():
                 st.write(cid)
             except:
                 cid = post(endpoint + '/upload', content=file, headers=auth)
-                st.write(cid)
+                st.write(cid.json())
         return cid
 
 
