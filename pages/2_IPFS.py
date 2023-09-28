@@ -46,6 +46,7 @@ def upload_nft():
     filetypes = ['jpeg', 'jpg', 'png']
     file = st.sidebar.file_uploader('NFT', filetypes)
     if st.sidebar.button('UPLOAD') and file:
+        st.image(file)
         with st.spinner():
             try:
                 cid = publish(file)
