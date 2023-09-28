@@ -68,7 +68,8 @@ def upload_nft():
                 return st.session_state['cid']
             except:
                 try:
-                    ret = client.post('/upload', loaded_file, headers=headers)
+                    files = {'file': loaded_file}
+                    ret = client.post('/upload', files=files, headers=headers)
                     cid = loads(ret.content)
                     st.write(cid)
                     st.success('Completed Successfully')
