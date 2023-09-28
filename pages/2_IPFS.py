@@ -50,9 +50,10 @@ def upload_nft():
         with st.spinner():
             try:
                 cid = publish(file)
-                st.text(cid)
+                st.write(cid)
             except:
                 cid = post(endpoint + '/upload', content=file, headers=auth)
+                st.write(cid)
         return cid
 
 
