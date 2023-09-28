@@ -42,7 +42,8 @@ def load_wallet():
     wallet = st.file_uploader('Open Wallet', type=emoji[126])
     if wallet: 
         decoded_data = b64decode(wallet.read())
-        st.session_state['loadwallet'] = loads(decoded_data); return False
+        st.session_state['loadwallet'] = loads(decoded_data)
+        return False
     return True 
  
 def display_wallet():
@@ -64,7 +65,7 @@ def display_wallet():
     address = hdwallet.from_path(derivation).dumps()
     number_emotes = [emoji[287], emoji[286], emoji[285], emoji[284], emoji[283], emoji[282], emoji[281], emoji[272], emoji[273], emoji[274]]
     addr_emote = ''.join([number_emotes[int(a)] for a in str(addr)])
-    filename = st.text_input('File Name', f'{emoji[768]+emoji[289]+addr_emote}')
+    filename = st.text_input('File Name', f'{emoji[768]+addr_emote}')
     data_string = dumps(address)
     st.download_button('Download', b64encode(bytes(data_string, 'utf-8')), f'{filename}.{emoji[126]}')
     st.divider()
