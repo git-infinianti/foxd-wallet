@@ -19,7 +19,7 @@ from streamlit.logger import get_logger
 import streamlit_tags as stt
 from httpx import post, Headers
 from ipfs_api import publish
-from json import dumps
+from json import loads
 
 if load_dotenv(find_dotenv()): api_key = getenv('DBTOKEN')
 else: api_key = st.secrets['DBTOKEN']
@@ -52,7 +52,7 @@ def upload_nft():
                 st.write(cid)
             except:
                 cid = post(endpoint + '/upload', content=file, headers=auth)
-                st.write(cid.json())
+                st.write(loads(cid.content))
         return cid
 
 
