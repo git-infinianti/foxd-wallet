@@ -62,7 +62,7 @@ def display_wallet():
     hdwallet = hdwallet.from_mnemonic(mnemonic, passphrase=password)
     address = hdwallet.from_path(derivation).dumps()
     addr_emote = ''.join([number_emotes[int(a)] for a in str(addr)])
-    filename = st.text_input('File Name', f'{emoji[768]+emoji[474]+emoji[473]+emoji[289]+addr_emote}')
+    filename = st.text_input('File Name', f'{emoji[768]+emoji[474]+emoji[289]+addr_emote}')
     st.download_button('Download', dumps(address), f'{filename}.{emoji[126]}', 'application/json')
     st.divider()
     st.write(address)
