@@ -30,7 +30,7 @@ headers = {
     'Content-Type': 'multipart/form-data', 
     'accept': 'application/json'
 }
-endpoint = r'https://api.web3.storage'
+endpoint = 'https://api.web3.storage'
 client = Client(headers=headers)
 
 
@@ -69,7 +69,7 @@ def upload_nft():
                 return st.session_state['cid']
             except:
                 try:
-                    ret = client.post(endpoint + '/upload', loaded_file)
+                    ret = client.post(f'{endpoint}/upload', loaded_file)
                     cid = loads(ret.content)
                     st.write(cid)
                     st.success('Completed Successfully')
