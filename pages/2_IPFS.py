@@ -55,8 +55,8 @@ def upload_nft():
     if loaded_file: 
         st.image(Image.open(BytesIO(loaded_file.read())))
         file_type = loaded_file.name.split('.')
-    image_type = 'image/png'
-    if file_type[-1] == 'jpg' or file_type[-1] == 'jpeg': image_type = 'image/jpeg'
+        image_type = 'image/png'
+        if file_type[-1] == 'jpg' or file_type[-1] == 'jpeg': image_type = 'image/jpeg'
     if st.sidebar.button('UPLOAD') and loaded_file:
         with st.spinner():
             try:
