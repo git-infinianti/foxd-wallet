@@ -19,8 +19,12 @@ from ipfs_api import publish
 LOGGER = get_logger(__name__)
 
 
+def encode_image():
+    pass
+
+
 def asset(icon, name, description, asset_type, restrictions, keywords): return {
-		'icon': img_file(icon),
+		'icon': encode_image(icon),
 		'name': name,
 		'description': description,
 		'asset_type': asset_type,
@@ -44,7 +48,6 @@ def setup():
     st.write('# IPFS 🗃️')
     st.divider()
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
-    if st.sidebar.button('REFRESH'): st.rerun()
     upload_nft()
 
 

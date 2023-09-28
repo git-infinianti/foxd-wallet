@@ -13,20 +13,25 @@
 # limitations under the License.
 import streamlit as st
 from streamlit.logger import get_logger
+import streamlit_tags as stt
+
 
 
 LOGGER = get_logger(__name__)
 
 
 def generate_config():
-    testnet = st.sidebar.toggle('testnet', False)
-    regtest = st.sidebar.toggle('regtest', False)
-    proxy = st.sidebar.toggle('proxy', False)
-    bind = st.sidebar.toggle('bind', False)
-    whitebind = st.sidebar.toggle('whitebind', False)
-    addnode = st.sidebar.toggle('addnode', False)
-    connect = st.sidebar.toggle('connect', False)
-    maxconnections = st.sidebar.toggle('maxconnections', False)
+    testnet = st.sidebar.toggle('Enable Testnet')
+    regtest = st.sidebar.toggle('Enable Regtest')
+    proxy = f"proxy={st.sidebar.text_input('Enter a Proxy IP Address')}"
+    connect = stt.st_tags_sidebar(label='Connections', text="Enter an IP(s)")
+    maxconnections = st.sidebar.number_input('Maximum Connections', 0)
+    return ''
+
+
+def download_button():
+    config = generate_config()
+    st.download_button('Download Config File', config)
 
 
 def setup():
@@ -34,8 +39,7 @@ def setup():
     st.write('# Node Configurator 🧰')
     st.divider()
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
-    if st.sidebar.button('REFRESH'): st.rerun()
-    generate_config()
+    download_button()
 
 
 def node_config():

@@ -13,6 +13,7 @@
 # limitations under the License.
 import streamlit as st
 from streamlit.logger import get_logger
+
 from hdwallet import utils, HDWallet
 from hdwallet.derivations import Derivation
 from hdwallet.cryptocurrencies import get_cryptocurrency
@@ -25,16 +26,16 @@ def hierarchical_deterministic_wallet(symbol): return HDWallet(symbol, get_crypt
 
 
 def mnemonic_phrase():
-    lang = st.sidebar.text_input('Language', 'english').lower()
-    str = st.sidebar.select_slider('Security Strength', (128, 256), 128)
-    mnem = utils.generate_mnemonic(lang, str)
+    lang = st.sidebar.text_input('Language', 'english', key='language').lower()
+    strength = st.sidebar.select_slider('Security Strength', (128, 256), 128)
+    mnem = utils.generate_mnemonic(lang, strength)
     mnemonic = st.text_input('Secret Words', mnem)
     st.divider()
     return mnemonic
 
 
 def display_wallet():
-    mnemonic = st.sidebar.text_input('Secret Words')
+    mnemonic = st.sidebar.text_input('Secret Words', key='mnemonic')
     if not mnemonic: st.sidebar.divider(); mnemonic = mnemonic_phrase()
     addr = st.sidebar.number_input('Address', 0, None, 0, 1)
     derivation = Derivation(f"m/44'/0'/0'/0/{addr}")
