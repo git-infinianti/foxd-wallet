@@ -70,7 +70,9 @@ def upload_nft():
                     st.session_state['cid'] = cid
                     st.write(cid)
                 except: print(Exception)
-            return cid
+            finally:
+                cid = st.session_state['cid']
+                return cid
 
 
 def setup():
