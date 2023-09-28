@@ -26,12 +26,11 @@ LOGGER = get_logger(__name__)
 
 api_key = st.secrets['DBTOKEN']
 headers = {
-    'Authorization': f'Bearer {api_key}', 
-    'Content-Type': 'multipart/form-data', 
+    'Authorization': f'Bearer {api_key}',
     'accept': 'application/json'
 }
 endpoint = 'https://api.web3.storage'
-client = Client(headers=headers)
+client = Client(base_url=endpoint, headers=headers)
 
 
 def encode_image():
@@ -57,7 +56,6 @@ def upload_nft():
         st.success('Image Loaded Successfully')
         file_type = loaded_file.name.split('.')
         image_type = 'image/jpeg' if file_type[-1] == 'jpg' or file_type[-1] == 'jpeg' else 'image/png'
-        headers['Content-Type'] = image_type
     if st.sidebar.button('UPLOAD') and loaded_file:
         with st.spinner():
             try:
