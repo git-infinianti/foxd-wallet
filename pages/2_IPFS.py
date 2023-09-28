@@ -26,7 +26,8 @@ LOGGER = get_logger(__name__)
 
 api_key = st.secrets['DBTOKEN']
 headers = {
-    'Authorization': f'Bearer {api_key}',
+    'Authorization': f'Bearer {api_key}', 
+    'Content-Type': 'multipart/form-data', 
     'accept': 'application/json'
 }
 endpoint = 'https://api.web3.storage'
@@ -67,7 +68,7 @@ def upload_nft():
                 return st.session_state['cid']
             except:
                 try:
-                    ret = client.post(f'{endpoint}/upload', loaded_file, headers=headers)
+                    ret = client.post('/upload', loaded_file, headers=headers)
                     cid = loads(ret.content)
                     st.write(cid)
                     st.success('Completed Successfully')
