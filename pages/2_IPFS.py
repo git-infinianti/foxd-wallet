@@ -54,6 +54,7 @@ def upload_nft():
     loaded_file = st.sidebar.file_uploader('NFT', filetypes)
     if loaded_file: 
         st.image(Image.open(BytesIO(loaded_file.read())))
+        st.success('Image Loaded Successfully')
         file_type = loaded_file.name.split('.')
         image_type = 'image/jpeg' if file_type[-1] == 'jpg' or file_type[-1] == 'jpeg' else 'image/png'
         headers['Content-Type'] = image_type
@@ -63,6 +64,7 @@ def upload_nft():
                 cid = publish(loaded_file)
                 st.session_state['cid'] = cid
                 st.write(st.session_state['cid'])
+                st.success('Completed Successfully')
                 return cid
             except:
                 try:
@@ -70,8 +72,9 @@ def upload_nft():
                     cid = loads(ret.content)
                     st.session_state['cid'] = cid
                     st.write(cid)
+                    st.success('Completed Successfully')
                     return cid
-                except: print(Exception)
+                except: st.write
 
 
 def setup():
