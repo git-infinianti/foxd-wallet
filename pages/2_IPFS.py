@@ -59,10 +59,17 @@ def upload_nft():
         if file_type[-1] == 'jpg' or file_type[-1] == 'jpeg': image_type = 'image/jpeg'
     if st.sidebar.button('UPLOAD') and loaded_file:
         with st.spinner():
-            ret = client.post(url=endpoint + '/upload', content=loaded_file, params={'file': loaded_file.name, 'type': image_type})
-            cid = loads(ret.content)
-            st.session_state['cid'] = cid
-            st.write(cid)
+            try:
+                cid = publish(loaded_file)
+                st.session_state['cid'] = cid
+                st.write(st.session_state['cid'])
+            except:
+                try:
+                    ret = client.post(url=endpoint + '/upload', content=loaded_file, params={'file': loaded_file.name, 'type': image_type})
+                    cid = loads(ret.content)
+                    st.session_state['cid'] = cid
+                    st.write(cid)
+                except: print(Exception)
             return cid
 
 
