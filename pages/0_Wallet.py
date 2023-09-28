@@ -63,6 +63,7 @@ def display_wallet():
     address = hdwallet.from_path(derivation).dumps()
     filename = st.text_input('File Name', f'foxdream-{addr}')
     st.download_button('Download', dumps(address), f'{filename}.json', 'application/json')
+    st.divider()
     st.write(address)
 
 
