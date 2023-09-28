@@ -25,7 +25,7 @@ LOGGER = get_logger(__name__)
 
 
 api_key = st.secrets['DBTOKEN']
-headers = {'Authorization': f'Bearer {api_key}', 'Content-Type': 'multipart/form-data'}
+headers = {'Authorization': f'Bearer {api_key}'}
 endpoint = r'https://api.web3.storage'
 
 
