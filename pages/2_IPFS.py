@@ -69,8 +69,9 @@ def upload_nft():
                 try:
                     files = {'file': loaded_file}
                     ret = client.post('/upload', files=files, headers=headers)
-                    cid = loads(ret.content)
-                    st.write(cid)
+                    cid = loads(ret.text)
+                    if 'cid' in cid.keys(): 
+                        st.write(cid['cid'])
                     st.success('Completed Successfully')
                     st.session_state['cid'] = cid
                     return st.session_state['cid']
