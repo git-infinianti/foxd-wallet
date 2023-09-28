@@ -44,7 +44,7 @@ def asset(ftypes): return {
 		'description': st.text_area('Description'),
 		'asset_type': st.selectbox('Asset Type', ['Main', 'Sub', 'Unique']),
 		'restrictions': st.multiselect('Restrictions', ['Unissuable']),
-		'keywords': stt.st_tags(),
+		'key_words': stt.st_tags(label='Identifiers', text='Press Enter to Create New Tag'),
         'image': st.file_uploader('Image', ftypes)
 	}
 
