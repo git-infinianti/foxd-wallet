@@ -40,12 +40,12 @@ def encode_image():
 
 
 def asset(ftypes): return {
-		'image': st.file_uploader('Image', ftypes),
 		'name': st.text_input('Name'),
 		'description': st.text_area('Description'),
 		'asset_type': st.selectbox('Asset Type', ['Main', 'Sub', 'Unique']),
 		'restrictions': st.multiselect('Restrictions', ['Unissuable']),
-		'keywords': stt.st_tags()
+		'keywords': stt.st_tags(),
+        'image': st.file_uploader('Image', ftypes)
 	}
 
 
