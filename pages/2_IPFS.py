@@ -22,9 +22,10 @@ from PIL import Image
 
 
 LOGGER = get_logger(__name__)
-
-
 with open('emoji.json') as f: emoji = load(f)
+
+
+
 api_key = st.secrets['DBTOKEN']
 headers = {
     'Authorization': f'Bearer {api_key}', 
@@ -55,8 +56,6 @@ def upload_nft():
     if loaded_file: 
         st.image(Image.open(BytesIO(loaded_file.read())))
         st.success('Image Loaded Successfully')
-        file_type = loaded_file.name.split('.')
-        image_type = 'image/jpeg' if file_type[-1] == 'jpg' or file_type[-1] == 'jpeg' else 'image/png'
     if st.sidebar.button('UPLOAD') and loaded_file:
         with st.spinner():
             try:
