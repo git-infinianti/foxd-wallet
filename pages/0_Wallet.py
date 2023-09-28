@@ -18,6 +18,8 @@ from hdwallet import utils, HDWallet
 from hdwallet.derivations import Derivation
 from hdwallet.cryptocurrencies import get_cryptocurrency
 
+from json import dumps
+
 
 LOGGER = get_logger(__name__)
 
@@ -42,7 +44,10 @@ def display_wallet():
     hdwallet = hierarchical_deterministic_wallet('FOXD')
     password = st.sidebar.text_input('Passphrase')
     hdwallet = hdwallet.from_mnemonic(mnemonic, passphrase=password)
-    st.write(hdwallet.from_path(derivation).dumps())
+    address = hdwallet.from_path(derivation).dumps()
+    filename = st.text_input('File Name', f'foxd-address-{addr}')
+    st.download_button('Download', dumps(address), f'{filename}.json', 'application/json')
+    st.write(address)
 
 
 def setup():
