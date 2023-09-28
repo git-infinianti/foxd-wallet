@@ -63,8 +63,9 @@ def upload_nft():
                 cid = publish(loaded_file)
                 st.session_state['cid'] = cid
                 st.write(st.session_state['cid'])
-            except:
-                ret = client.post(url=endpoint + '/upload', json={'file': loaded_file, 'type': image_type})
+            except: pass
+            else:
+                ret = client.post(url=endpoint + '/upload', content=loaded_file, params={'file': loaded_file.name, 'type': image_type})
                 cid = loads(ret.content)
                 st.session_state['cid'] = cid
                 st.write(cid)
