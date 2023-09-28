@@ -59,7 +59,7 @@ def upload_nft():
                 cid = loads(cid.content)
                 st.session_state['cid'] = cid
                 st.write(cid)
-            return cid
+        return cid
 
 
 def setup():
