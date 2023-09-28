@@ -43,10 +43,14 @@ def load_wallet():
 
 
 def display_wallet():
-    if load_wallet(): mnemonic = st.sidebar.text_input('Secret Words', key='mnemonic')
-    else: mnemonic = st.session_state['loadwallet']['mnemonic']
+    if load_wallet(): 
+        addr = st.sidebar.number_input('Address', 0, None, 'min', 1)
+        mnemonic = st.sidebar.text_input('Secret Words', key='mnemonic')
+    else: 
+        addr = str(st.session_state['loadwallet']['path']).split('/')
+        addr = st.sidebar.number_input('Address', 0, None, int(addr[-1]), 1)
+        mnemonic = st.session_state['loadwallet']['mnemonic']
     if not mnemonic: st.sidebar.divider(); mnemonic = mnemonic_phrase()
-    addr = st.sidebar.number_input('Address', 0, None, 0, 1)
     derivation = Derivation(f"m/44'/0'/0'/0/{addr}")
     hdwallet = hierarchical_deterministic_wallet('FOXD')
     password = st.sidebar.text_input('Passphrase')
