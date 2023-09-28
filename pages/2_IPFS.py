@@ -55,7 +55,7 @@ def upload_nft():
     loaded_file = st.sidebar.file_uploader('NFT', filetypes)
     if loaded_file: 
         st.image(Image.open(BytesIO(loaded_file.read())))
-        st.success('Image Loaded Successfully')
+        st.success(f'Image Loaded Successfully {emoji[296]}')
     if st.sidebar.button('UPLOAD') and loaded_file:
         with st.spinner():
             try:
