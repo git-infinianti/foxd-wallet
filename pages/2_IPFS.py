@@ -16,7 +16,7 @@ import streamlit as st
 from streamlit.logger import get_logger
 import streamlit_tags as stt
 from httpx import Client
-from ipfs_api import publish
+from ipfs_api import publish, pin
 from json import load, loads
 from PIL import Image
 
@@ -60,9 +60,9 @@ def upload_nft():
         with st.spinner():
             try:
                 cid = publish(loaded_file)
-                st.session_state['cid'] = cid
-                st.write(st.session_state['cid'])
-                st.success('Uploaded Successfully')
+                pin(cid)
+                st.code(cid)
+                st.success(f'Uploaded Successfully {emoji[296]}')
                 st.session_state['cid'] = cid
                 return st.session_state['cid']
             except:
@@ -71,10 +71,10 @@ def upload_nft():
                     ret = client.post('/upload', files=files, headers=headers)
                     cid = loads(ret.text)
                     if 'cid' in cid.keys(): st.code(cid['cid'])
-                    st.success('Uploaded Successfully')
+                    st.success(f'Uploaded Successfully {emoji[296]}')
                     st.session_state['cid'] = cid
                     return st.session_state['cid']
-                except: st.error('File Failed to Upload')
+                except: st.error(f'File Failed to Upload {emoji[292]}')
 
 
 def setup():
