@@ -62,9 +62,10 @@ def setup():
     st.write('# IPFS 🗃️')
     st.divider()
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
-    upload_nft()
+    
 
 
 def ipfs():
     setup()
+    upload_nft()
 ipfs()
