@@ -25,7 +25,7 @@ if load_dotenv(find_dotenv()): api_key = getenv('DBTOKEN')
 else: api_key = getenv('DBTOKEN')
 
 LOGGER = get_logger(__name__)
-auth = {'Authorization': f'Bearer {api_key}'}
+auth = f'Authorization: Bearer {api_key}'
 endpoint = r'https://api.web3.storage'
 
 
