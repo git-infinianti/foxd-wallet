@@ -38,10 +38,9 @@ def setup():
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
     search_nft()
     with st.sidebar: selected = stom.option_menu(None, ['Browse', 'Buy', 'Sell'])
-    match selected:
-        case 'Browse': browse()
-        case 'Buy': buy()
-        case 'Sell': sell()
+    if selected == 'Browse': browse()
+    if selected == 'Buy': buy()
+    if selected == 'Sell': sell()
 
 
 def nft():
