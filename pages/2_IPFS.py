@@ -74,7 +74,7 @@ def upload_nft():
                     st.write(cid)
                     st.success('Completed Successfully')
                     return cid
-                except: st.write
+                except: st.error('File Failed to Upload')
 
 
 def setup():
