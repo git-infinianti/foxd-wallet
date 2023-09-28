@@ -15,7 +15,7 @@ from io import BytesIO
 import streamlit as st
 from streamlit.logger import get_logger
 import streamlit_tags as stt
-from httpx import post
+from httpx import Client
 from ipfs_api import publish
 from json import loads
 from PIL import Image
@@ -25,8 +25,13 @@ LOGGER = get_logger(__name__)
 
 
 api_key = st.secrets['DBTOKEN']
-headers = {'Authorization': f'Bearer {api_key}'}
+headers = {
+    'Authorization': f'Bearer {api_key}', 
+    'Content-Type': 'multipart/form-data', 
+    'accept': 'application/json'
+}
 endpoint = r'https://api.web3.storage'
+client = Client(headers=headers)
 
 
 def encode_image():
@@ -54,7 +59,7 @@ def upload_nft():
                 st.session_state['cid'] = cid
                 st.write(st.session_state['cid'])
             except:
-                ret = post(url=endpoint + '/upload', content=BytesIO(file.read()), headers=headers)
+                ret = client.post(url=endpoint + '/upload', content=file)
                 cid = loads(ret.content)
                 st.session_state['cid'] = cid
                 st.write(cid)
