@@ -1,4 +1,4 @@
 
 [server]
 headless = true
-maxUploadSize=5
+maxUploadSize=8
