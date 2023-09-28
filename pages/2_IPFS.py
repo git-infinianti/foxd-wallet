@@ -19,13 +19,14 @@ from streamlit.logger import get_logger
 import streamlit_tags as stt
 from httpx import post
 from ipfs_api import publish
+from json import dumps
 
 
 if load_dotenv(find_dotenv()): api_key = getenv('DBTOKEN')
 else: api_key = getenv('DBTOKEN')
 
 LOGGER = get_logger(__name__)
-auth = f'Authorization: Bearer {api_key}'
+auth = dumps({'Authorization': f'Bearer {api_key}'})
 endpoint = r'https://api.web3.storage'
 
 
