@@ -72,7 +72,7 @@ def upload_nft():
                 except: print(Exception)
             finally:
                 cid = ''
-                if st.session_state['cid']: cid = st.session_state['cid']
+                cid = st.session_state['cid'] if st.session_state['cid'] else ''
                 return cid
 
 
