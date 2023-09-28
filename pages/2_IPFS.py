@@ -20,7 +20,7 @@ import streamlit_tags as stt
 from httpx import post, Headers
 from ipfs_api import publish
 from json import loads
-
+from PIL import Image
 if load_dotenv(find_dotenv()): api_key = getenv('DBTOKEN')
 else: api_key = st.secrets['DBTOKEN']
 LOGGER = get_logger(__name__)
@@ -43,9 +43,9 @@ def asset(): return {
 
 
 def upload_nft():
-    filetypes = ['jpeg', 'jpg', 'png']
+    filetypes = ['jpeg', 'jpg', 'png', 'gif', 'webp']
     file = st.sidebar.file_uploader('NFT', filetypes)
-    if file != None: st.image(file)
+    st.image(Image.open(file))
     if st.sidebar.button('UPLOAD') and file:
         with st.spinner():
             try:
