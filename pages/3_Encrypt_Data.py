@@ -13,9 +13,11 @@
 # limitations under the License.
 import streamlit as st
 from streamlit.logger import get_logger
+from json import load
 
 
 LOGGER = get_logger(__name__)
+with open('emoji.json') as f: emoji = load(f)
 
 
 def setup():

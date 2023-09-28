@@ -14,10 +14,12 @@
 import streamlit as st
 from streamlit.logger import get_logger
 import streamlit_tags as stt
+from json import load
 
 
 
 LOGGER = get_logger(__name__)
+with open('emoji.json') as f: emoji = load(f)
 
 
 def generate_config():

@@ -22,6 +22,7 @@ from json import dumps, load
 
 
 LOGGER = get_logger(__name__)
+with open('emoji.json') as f: emoji = load(f)
 
 
 def hierarchical_deterministic_wallet(symbol): return HDWallet(symbol, get_cryptocurrency(symbol))
@@ -66,7 +67,7 @@ def display_wallet():
 
 
 def setup():
-    st.set_page_config(page_title='Wallet', page_icon='💳')
+    st.set_page_config(page_title='Wallet', page_icon=emoji[126])
     st.write('# Wallet 💳')
     st.divider()
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)

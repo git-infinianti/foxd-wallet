@@ -17,13 +17,14 @@ from streamlit.logger import get_logger
 import streamlit_tags as stt
 from httpx import Client
 from ipfs_api import publish
-from json import loads
+from json import load, loads
 from PIL import Image
 
 
 LOGGER = get_logger(__name__)
 
 
+with open('emoji.json') as f: emoji = load(f)
 api_key = st.secrets['DBTOKEN']
 headers = {
     'Authorization': f'Bearer {api_key}', 
@@ -62,7 +63,7 @@ def upload_nft():
                 cid = publish(loaded_file)
                 st.session_state['cid'] = cid
                 st.write(st.session_state['cid'])
-                st.success('Completed Successfully')
+                st.success('Uploaded Successfully')
                 st.session_state['cid'] = cid
                 return st.session_state['cid']
             except:
@@ -70,21 +71,19 @@ def upload_nft():
                     files = {'file': loaded_file}
                     ret = client.post('/upload', files=files, headers=headers)
                     cid = loads(ret.text)
-                    if 'cid' in cid.keys(): 
-                        st.write(cid['cid'])
-                    st.success('Completed Successfully')
+                    if 'cid' in cid.keys(): st.code(cid['cid'])
+                    st.success('Uploaded Successfully')
                     st.session_state['cid'] = cid
                     return st.session_state['cid']
                 except: st.error('File Failed to Upload')
 
 
 def setup():
-    st.set_page_config(page_title='IPFS', page_icon='🗃️')
-    st.write('# IPFS 🗃️')
+    st.set_page_config(page_title='IPFS', page_icon=emoji[79])
+    st.write(f'# IPFS {emoji[79]}')
     st.divider()
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
     
-
 
 def ipfs():
     setup()

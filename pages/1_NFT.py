@@ -16,8 +16,10 @@ from streamlit.logger import get_logger
 import streamlit_option_menu as stom
 import streamlit_tags as stt
 
+from json import load
 
 LOGGER = get_logger(__name__)
+with open('emoji.json') as f: emoji = load(f)
 ipfs_url = r'https://ipfs.io/ipfs/'
 
 
