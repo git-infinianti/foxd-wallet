@@ -19,7 +19,7 @@ LOGGER = get_logger(__name__)
 
 
 def setup():
-    st.set_page_config(page_title='Foxdcoin Wallet', page_icon='👋', initial_sidebar_state='expanded')
+    st.set_page_config(page_title='Fox Dream', page_icon='👋', initial_sidebar_state='expanded')
     st.write('# Welcome to Foxdcoin! 👋')
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
 
