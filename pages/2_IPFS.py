@@ -63,15 +63,15 @@ def upload_nft():
                 cid = publish(loaded_file)
                 st.session_state['cid'] = cid
                 st.write(st.session_state['cid'])
+                return cid
             except:
                 try:
                     ret = client.put(url=endpoint + '/upload', content=loaded_file)
                     cid = loads(ret.content)
                     st.session_state['cid'] = cid
                     st.write(cid)
+                    return cid
                 except: print(Exception)
-            finally:
-                if cid: return cid
 
 
 def setup():
