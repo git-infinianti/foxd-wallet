@@ -24,7 +24,7 @@ with open('emoji.json') as f: emoji = load(f)
 ipfs_url = r'https://ipfs.io/ipfs'
 api_endpoint = st.secrets['BASEAPI']
 client = Client(base_url=api_endpoint)
-client.post('/bal', json={})
+client.post('/info', json={})
 
 
 def search_nft(): st.sidebar.text_input('Search for NFT')
