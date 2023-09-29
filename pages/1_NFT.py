@@ -21,7 +21,7 @@ from httpx import Client
 
 LOGGER = get_logger(__name__)
 with open('emoji.json') as f: emoji = load(f)
-ipfs_url = r'https://ipfs.io/ipfs'
+ipfs_endpoint = r'https://ipfs.io/ipfs'
 api_endpoint = st.secrets['BASEAPI']
 api = Client(base_url=api_endpoint)
 
@@ -32,13 +32,16 @@ def api_interface():
 
 @st.cache_data
 def search_nft(asset='A'):
-    with st.spinner():
-        st.write(api.post('/nft', params={'asset': f'{asset}*', 'verbose': True}).json())
+    return api.post('/nft', params={'asset': f'{asset}*', 'verbose': True}).json()
+        
 
 def browse():
     nft = st.sidebar.text_input('Search for NFT')
-    if nft: search_nft(nft)
-    else: search_nft()
+    if nft: data = search_nft(nft)
+    else: data = search_nft()
+    for d in data.values():
+        if d['has_ipfs']:
+            st.image(f"{ipfs_endpoint}/{d['ipfs_hash']}")
 
 
 def buy(): st.write('What would you like to buy?')
