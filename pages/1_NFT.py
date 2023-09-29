@@ -23,14 +23,22 @@ LOGGER = get_logger(__name__)
 with open('emoji.json') as f: emoji = load(f)
 ipfs_url = r'https://ipfs.io/ipfs'
 api_endpoint = st.secrets['BASEAPI']
-client = Client(base_url=api_endpoint)
-client.post('/info', json={})
+api = Client(base_url=api_endpoint)
 
 
-def search_nft(): st.sidebar.text_input('Search for NFT')
+def api_interface():
+    pass
 
 
-def browse(): st.write('You are now Browsing')
+@st.cache_data
+def search_nft(asset='A'):
+    with st.spinner():
+        st.write(api.post('/nft', params={'asset': f'{asset}*', 'verbose': True}).json())
+
+def browse():
+    nft = st.sidebar.text_input('Search for NFT')
+    if nft: search_nft(nft)
+    else: search_nft()
 
 
 def buy(): st.write('What would you like to buy?')
@@ -44,13 +52,14 @@ def setup():
     st.write('# NFT 📝')
     st.divider()
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
-    search_nft()
-
-
+    
+    
 def nft():
     setup()
+    api_interface()
     with st.sidebar: selected = stom.option_menu(None, ['Browse', 'Buy', 'Sell'])
     if selected == 'Browse': browse()
     if selected == 'Buy': buy()
     if selected == 'Sell': sell()
+    
 nft()
