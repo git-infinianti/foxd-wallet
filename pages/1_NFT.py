@@ -17,10 +17,14 @@ import streamlit_option_menu as stom
 import streamlit_tags as stt
 
 from json import load
+from httpx import Client
 
 LOGGER = get_logger(__name__)
 with open('emoji.json') as f: emoji = load(f)
-ipfs_url = r'https://ipfs.io/ipfs/'
+ipfs_url = r'https://ipfs.io/ipfs'
+api_endpoint = st.secrets['BASEAPI']
+client = Client(base_url=api_endpoint)
+client.post('/bal', json={})
 
 
 def search_nft(): st.sidebar.text_input('Search for NFT')
