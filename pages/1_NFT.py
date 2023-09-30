@@ -26,33 +26,17 @@ api_endpoint = st.secrets['BASEAPI']
 api = Client(base_url=api_endpoint)
 
 
-def api_interface():
-    pass
+def api_interface(): pass
 
 
 @st.cache_data
 def search_nft(asset='A'):
     return api.post('/nft', params={'asset': f'{asset}*', 'verbose': True}).json()
-        
-
-def browse():
-    nft = st.sidebar.text_input('Search for NFT')
-    if nft: data = search_nft(nft)
-    else: data = search_nft()
-    for d in data.values():
-        if d['has_ipfs']:
-            st.image(f"{ipfs_endpoint}/{d['ipfs_hash']}")
-
-
-def buy(): st.write('What would you like to buy?')
-
-
-def sell(): st.write('What would you like to sell?')
 
 
 def setup():
-    st.set_page_config(page_title='NFT', page_icon='📝')
-    st.write('# NFT 📝')
+    st.set_page_config(page_title='NFT', page_icon=emoji[100])
+    st.write(f'# NFT {emoji[100]}')
     st.divider()
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
     
@@ -61,8 +45,18 @@ def nft():
     setup()
     api_interface()
     with st.sidebar: selected = stom.option_menu(None, ['Browse', 'Buy', 'Sell'])
+    def browse():
+        nft = st.sidebar.text_input('Search for NFT')
+        csens = st.sidebar.checkbox('Case Sensitive', True)
+        if not csens: nft = nft.upper()
+        if nft: data = search_nft(nft)
+        else: data = search_nft()
+        for d in data.values():
+            if d['has_ipfs']: st.image(f"{ipfs_endpoint}/{d['ipfs_hash']}")
     if selected == 'Browse': browse()
+    def buy(): st.write('What would you like to buy?')
     if selected == 'Buy': buy()
+    def sell(): st.write('What would you like to sell?')
     if selected == 'Sell': sell()
     
 nft()

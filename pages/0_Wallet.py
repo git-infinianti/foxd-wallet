@@ -20,15 +20,17 @@ from hdwallet.cryptocurrencies import get_cryptocurrency
 
 from json import dumps, load, loads
 from base64 import b64encode, b64decode
-
+from functools import cache
 
 LOGGER = get_logger(__name__)
 with open(f'emoji.json') as f: emoji = load(f)
 
 
+@cache
 def hierarchical_deterministic_wallet(symbol): return HDWallet(symbol, get_cryptocurrency(symbol))
 
 
+@cache
 def mnemonic_phrase():
     lang = st.sidebar.text_input('Language', 'english', key='language').lower()
     strength = st.sidebar.select_slider('Security Strength', (128, 256), 128)
@@ -38,6 +40,7 @@ def mnemonic_phrase():
     return mnemonic
 
 
+@cache
 def load_wallet():
     wallet = st.file_uploader('Open Wallet', type=emoji[126])
     if wallet: 
