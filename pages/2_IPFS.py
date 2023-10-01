@@ -50,12 +50,12 @@ def asset(ftype:list[str]): return {
 
 
 def tag_info(asset_data:dict):
-    tag_desc = []
-    if tags := asset_data['tags']:
-        st.sidebar.title('Tags')
-        for t in tags: tag_desc.append(st.sidebar.text_input(t))
+    perm_desc = []
+    if tags := asset_data['permissions']:
+        st.sidebar.title('Permissions')
+        for t in tags: perm_desc.append(st.sidebar.text_input(t))
         st.sidebar.divider()
-    st.session_state['tag_desc'] = tag_desc
+    st.session_state['perm_desc'] = perm_desc
     
     strict_desc = []
     if strict := asset_data['restrictions']:
