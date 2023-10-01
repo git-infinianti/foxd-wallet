@@ -59,7 +59,7 @@ def load_file() -> tuple[str]:
         chng = st.sidebar.number_input('Change', 0, None, next(args), 1)
         return acc, addr, chng
     if is_new_wallet(): 
-        acc, addr, chng = _wallet(*('min,'*3).split(',')[:-1])
+        acc, addr, chng = _wallet(0, 0, 0)
         mnemonic = st.sidebar.text_input('Secret Words')
    
     else: 
