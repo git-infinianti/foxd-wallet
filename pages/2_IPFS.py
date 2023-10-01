@@ -40,19 +40,19 @@ def encode_image():
 
 
 def asset(ftype:list[str]): return {
-		'name': st.text_input('Name'),
-		'description': st.text_area('Description'),
-		'asset_type': st.selectbox('Asset Type', ['Main', 'Sub', 'Unique'], 2),
-		'tags': stt.st_tags(label='Tags', text='Press Enter After Each Tag'),
-        'restrictions': stt.st_tags(label='Restrictions', text='Press Enter After Each Tag'),
-        'image': st.file_uploader('Image', ftype)
+		'name': st.text_input('# Name'),
+		'description': st.text_area('# Description'),
+		'asset_type': st.selectbox('# Asset Type', ['Main', 'Sub', 'Unique'], 2),
+		'tags': stt.st_tags(label='# Tags', text='Press Enter After Each Tag'),
+        'restrictions': stt.st_tags(label='# Restrictions', text='Press Enter After Each Tag'),
+        'image': st.file_uploader('# Image', ftype)
 	}
 
 
 def tag_info(asset_data:dict):
     tag_desc = []
     if tags := asset_data['tags']:
-        st.title('Tags')
+        st.sidebar.title('Tags')
         for t in tags: tag_desc.append(st.sidebar.text_input(t))
         st.sidebar.divider()
     st.session_state['tag_desc'] = tag_desc
