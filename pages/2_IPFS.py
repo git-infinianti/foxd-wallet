@@ -54,7 +54,7 @@ def tag_info(asset_data:dict):
     if tags := asset_data['tags']:
         st.title('Tags')
         for t in tags: tag_desc.append(st.sidebar.text_input(t))
-        st.sidebar.sidebar.divider()
+        st.sidebar.divider()
     st.session_state['tag_desc'] = tag_desc
     
     strict_desc = []
