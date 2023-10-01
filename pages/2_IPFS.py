@@ -53,13 +53,13 @@ def tag_info(asset_data:dict):
     tag_desc = []
     if tags := asset_data['tags']:
         for t in tags: tag_desc.append(st.sidebar.text_input(t.capitalize()))
-        st.divider()
+        st.sidebar.divider()
     st.session_state['tag_desc'] = tag_desc
     
     strict_desc = []
     if strict := asset_data['restrictions']:
         for s in strict: strict_desc.append(st.sidebar.text_input(s.capitalize()))
-        st.divider()
+        st.sidebar.divider()
     st.session_state['strict_desc'] = strict_desc 
 
 
