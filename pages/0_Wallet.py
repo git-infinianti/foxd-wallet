@@ -59,12 +59,12 @@ def load_file() -> tuple[str]:
         chng = st.sidebar.number_input('Change', 0, None, next(args), 1)
         return acc, addr, chng
     if is_new_wallet(): 
-        acc, addr, chng = _wallet(0, 0, 0)
+        acc, addr, chng = _wallet(*('min,'*3).split(',')[:-1])
         mnemonic = st.sidebar.text_input('Secret Words')
    
     else: 
         path = str(st.session_state['loadwallet']['path']).split('/')
-        emote = [path[3][0], path[4], path[5]]
+        emote = [int(path[3][0]), int(path[4]), int(path[5])]
         acc, addr, chng = _wallet(*emote)
         mnemonic = st.session_state['loadwallet']['mnemonic']
     
