@@ -12,12 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import streamlit as st
+import streamlit_tags as stt
 from streamlit.logger import get_logger
 from json import load
+from gnupg import GPG
 
 
+gpg = GPG()
 LOGGER = get_logger(__name__)
 with open('emoji.json') as f: emoji = load(f)
+
+def new_gpg_key(**kwargs): return gpg.gen_key(gpg.gen_key_input(**kwargs))
+
+
+def get_params():
+    stt.st_tags(label='Restrictions', text='Press Enter After Each Tag')
 
 
 def setup():
