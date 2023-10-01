@@ -49,26 +49,20 @@ def asset(ftype:list[str]): return {
 	}
 
 
-def tag_info(asset_data:dict):
-    perm_desc = []
-    if tags := asset_data['permissions']:
-        st.sidebar.title('Permissions')
-        for t in tags: perm_desc.append(st.sidebar.text_input(t))
+def tag_info(label, sstate, asset_data):
+    tag_desc = []
+    if tags := asset_data[label]:
+        st.sidebar.title(label.upper())
+        for t in tags: tag_desc.append(st.sidebar.text_input(t))
         st.sidebar.divider()
-    st.session_state['perm_desc'] = perm_desc
-    
-    strict_desc = []
-    if strict := asset_data['restrictions']:
-        st.sidebar.title('Restrictions')
-        for s in strict: strict_desc.append(st.sidebar.text_input(s))
-        st.sidebar.divider()
-    st.session_state['strict_desc'] = strict_desc 
+    st.session_state[f'{sstate}_description'] = tag_desc
 
 
 def upload_nft():
     filetypes, c = ['jpeg', 'jpg', 'png'], 'cid'
     asset_data = asset(filetypes)
-    tag_info(asset_data)
+    tag_info('permissions', 'permission', asset_data)
+    tag_info('restrictions', 'restriction', asset_data)
 
     loaded_file = asset_data['image']
     if loaded_file: 
