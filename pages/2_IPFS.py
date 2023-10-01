@@ -52,13 +52,16 @@ def asset(ftype:list[str]): return {
 def upload_nft():
     filetypes, c = ['jpeg', 'jpg', 'png'], 'cid'
     asset_data = asset(filetypes)
-    tag_desc, strict_desc = [], []
+    
+    tag_desc = []
     if tags := asset_data['tags']:
         for t in tags: tag_desc.append(st.sidebar.text_area(t.capitalize()))
     st.divider()
+    strict_desc = []
     if strict := asset_data['restrictions']:
         for s in strict: strict_desc.append(st.sidebar.text_area(s.capitalize()))
     st.divider()
+    
     loaded_file = asset_data['image']
     if loaded_file: 
         st.success(f'Image Loaded Successfully {emoji[296]}')
