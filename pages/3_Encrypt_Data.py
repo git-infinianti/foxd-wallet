@@ -35,6 +35,7 @@ def setup():
     st.divider()
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
     if st.sidebar.button('REFRESH'): st.rerun()
+    get_params()
 
 
 def encrypt_data():
