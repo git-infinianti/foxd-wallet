@@ -39,17 +39,19 @@ def encode_image():
     pass
 
 
-def asset(ftype:list[str]): return {
+def asset(ftype:list[str]):
+    txt = 'Press Enter After Each Tag'
+    return {
 		'name': st.text_input('Name'),
 		'description': st.text_area('Description'),
 		'asset_type': st.selectbox('Asset Type', ['Main', 'Sub', 'Unique'], 2),
-		'permissions': stt.st_tags(label='Permissions', text='Press Enter After Each Tag'),
-        'restrictions': stt.st_tags(label='Restrictions', text='Press Enter After Each Tag'),
+		'permissions': stt.st_tags(label='Permissions', text=txt),
+        'restrictions': stt.st_tags(label='Restrictions', text=txt),
         'image': st.file_uploader('Image', ftype)
 	}
 
 
-def tag_info(label, sstate, asset_data):
+def tag_info(sstate, label, asset_data):
     tag_desc = []
     if tags := asset_data[label]:
         st.sidebar.title(label.upper())
