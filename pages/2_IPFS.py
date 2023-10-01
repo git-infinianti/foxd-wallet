@@ -45,6 +45,7 @@ def asset(ftype:list[str]):
 		'name': st.text_input('Name'),
 		'description': st.text_area('Description'),
 		'asset_type': st.selectbox('Asset Type', ['Main', 'Sub', 'Unique'], 2),
+        'tags': stt.st_tags(label='Tags', text=txt),
 		'permissions': stt.st_tags(label='Permissions', text=txt),
         'restrictions': stt.st_tags(label='Restrictions', text=txt),
         'image': st.file_uploader('Image', ftype)
@@ -63,7 +64,8 @@ def tag_info(sstate, label, asset_data):
 def upload_nft():
     filetypes, c = ['jpeg', 'jpg', 'png'], 'cid'
     asset_data = asset(filetypes)
-    tag_info(p:='permission', p+'s', asset_data)
+    tag_info(t:='tag',         t+'s', asset_data)
+    tag_info(p:='permission',  p+'s', asset_data)
     tag_info(r:='restriction', r+'s', asset_data)
 
     loaded_file = asset_data['image']
