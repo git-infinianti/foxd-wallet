@@ -14,15 +14,56 @@
 import streamlit as st
 import streamlit_tags as stt
 from streamlit.logger import get_logger
-from json import load
+from json import load, dumps
 from gnupg import GPG
 
+from httpx import Client
+from binascii import crc32
+from hashlib import sha256
+from base64 import urlsafe_b64encode
 
 gpg = GPG()
 LOGGER = get_logger(__name__)
+ENCODE = 'ascii'
+CIPHER = 'ECDSA'
+CURVE = 'secp256k1'
+client = Client()
 with open('emoji.json') as f: emoji = load(f)
 
+
+def sign(metadata): return sha256(bytes(dumps(metadata), 'ascii')).hexdigest()
+def p2pkh_chksum(p2pkh): return hex(crc32(bytes(p2pkh, ENCODE)))
+def get_pgp_block(fp: str): return gpg.export_keys(fp, expect_passphrase=False)
+
+
 def new_gpg_key(**kwargs): return gpg.gen_key(gpg.gen_key_input(**kwargs))
+
+
+def gen_key(sym: str, p2pkh:str, pw: str): 
+    input_data = {
+        'name_real': p2pkh, 
+        'name_email': f'{p2pkh}@{str(sym).lower()}.coin',
+        'passphrase': pw,
+        'key_type': CIPHER, 
+        'key_curve': CURVE
+    }
+    gpg.add_subkey(fp := str(new_gpg_key(**input_data)), pw, CURVE); return fp
+
+
+def img_url(url): img = client.get(url).content; return urlsafe_b64encode(img).hex()
+
+
+def img_file():
+    img = st.image()
+    with open(img, 'rb') as file: return urlsafe_b64encode(file.read()).hex()
+
+
+def encrypt_files(fpath, recipients, signer_fingerprint, pw:str, cipher_algorithm): 
+    return gpg.encrypt_file(fpath, recipients, signer_fingerprint, passphrase=pw, symmetric=cipher_algorithm) 
+
+
+def encrypt_img(img, fingerprint, pword):
+    return gpg.encrypt_file(img, fingerprint, passphrase=pword, symmetric=True)
 
 
 def get_params():

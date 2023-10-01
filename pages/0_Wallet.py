@@ -35,7 +35,7 @@ def mnemonic_phrase():
     lang = st.sidebar.text_input('Language', 'english', key='language').lower()
     strength = st.sidebar.select_slider('Security Strength', (128, 256), 128)
     mnemonic = utils.generate_mnemonic(lang, strength)
-    st.code(mnemonic)
+    st.code(mnemonic, None)
     st.divider()
     return mnemonic
 
