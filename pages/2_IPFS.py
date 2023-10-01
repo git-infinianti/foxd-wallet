@@ -43,8 +43,8 @@ def asset(ftype:list[str]): return {
 		'name': st.text_input('Name'),
 		'description': st.text_area('Description'),
 		'asset_type': st.selectbox('Asset Type', ['Main', 'Sub', 'Unique'], 2),
-		'tags': stt.st_tags(label='Tags', text='Press Enter to Create New Tag'),
-        'restrictions': st.multiselect('Restrictions', ['Unissuable']),
+		'tags': stt.st_tags(label='Tags', text='Press Enter After Each Tag'),
+        'restrictions': stt.st_tags(label='Restrictions', text='Press Enter After Each Tag'),
         'image': st.file_uploader('Image', ftype)
 	}
 
