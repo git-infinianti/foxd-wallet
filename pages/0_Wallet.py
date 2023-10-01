@@ -49,22 +49,23 @@ def is_new_wallet():
         return False
     return True 
 
-def wallet(*args) -> tuple[str]:
+
+
+def load_file() -> tuple[str]:
+    def _wallet(*args) -> tuple[str]:
         args = (arg for arg in args)
         acc = st.sidebar.number_input('Account', 0, None, next(args), 1)
         addr = st.sidebar.number_input('Address', 0, None, next(args), 1)
         chng = st.sidebar.number_input('Change', 0, None, next(args), 1)
         return acc, addr, chng
-
-def load_file() -> tuple[str]:
     if is_new_wallet(): 
-        acc, addr, chng = wallet(*('min,'*3).split(',')[:-1])
+        acc, addr, chng = _wallet(*('min,'*3).split(',')[:-1])
         mnemonic = st.sidebar.text_input('Secret Words')
    
     else: 
         path = str(st.session_state['loadwallet']['path']).split('/')
         emote = [path[3][0], path[4], path[5]]
-        acc, addr, chng = wallet(*emote)
+        acc, addr, chng = _wallet(*emote)
         mnemonic = st.session_state['loadwallet']['mnemonic']
     
     if not mnemonic: 
