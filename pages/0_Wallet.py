@@ -92,7 +92,7 @@ def display_wallet():
     acc_emote = ''.join([number_emotes[int(a)] for a in str(acc)])
     addr_emote = ''.join([number_emotes[int(a)] for a in str(addr)])
     chng_emote = ''.join([number_emotes[int(a)] for a in str(chng)])
-    filename = st.text_input('File Name', emoji[768]+acc_emote+addr_emote+chng_emote)
+    filename = st.text_input('File Name', f'{emoji[768]+acc_emote}/{addr_emote}/{chng_emote}')
     data_string = dumps(address)
     st.download_button('Download', b64encode(bytes(data_string, 'utf-8')), f'{filename}.{emoji[126]}')
     st.divider()
