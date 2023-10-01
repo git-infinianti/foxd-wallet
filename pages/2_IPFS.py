@@ -61,8 +61,8 @@ def tag_info(label, sstate, asset_data):
 def upload_nft():
     filetypes, c = ['jpeg', 'jpg', 'png'], 'cid'
     asset_data = asset(filetypes)
-    tag_info('permissions', 'permission', asset_data)
-    tag_info('restrictions', 'restriction', asset_data)
+    tag_info(p:='permission', p+'s', asset_data)
+    tag_info(r:='restriction', r+'s', asset_data)
 
     loaded_file = asset_data['image']
     if loaded_file: 
