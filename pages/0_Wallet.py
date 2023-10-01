@@ -49,23 +49,22 @@ def is_new_wallet():
         return False
     return True 
 
-
-def load_file() -> tuple[str]:
-    def _wallet(*args) -> tuple[str]:
+def wallet(*args) -> tuple[str]:
         args = (arg for arg in args)
         acc = st.sidebar.number_input('Account', 0, None, next(args), 1)
         addr = st.sidebar.number_input('Address', 0, None, next(args), 1)
         chng = st.sidebar.number_input('Change', 0, None, next(args), 1)
         return acc, addr, chng
-    
+
+def load_file() -> tuple[str]:
     if is_new_wallet(): 
-        acc, addr, chng = _wallet(*('min,'*3).split(',')[:-1])
+        acc, addr, chng = wallet(*('min,'*3).split(',')[:-1])
         mnemonic = st.sidebar.text_input('Secret Words')
    
     else: 
         path = str(st.session_state['loadwallet']['path']).split('/')
         emote = [path[3][0], path[4], path[5]]
-        acc, addr, chng = _wallet(*emote)
+        acc, addr, chng = wallet(*emote)
         mnemonic = st.session_state['loadwallet']['mnemonic']
     
     if not mnemonic: 
@@ -93,7 +92,7 @@ def display_wallet():
     acc_emote = ''.join([number_emotes[int(a)] for a in str(acc)])
     addr_emote = ''.join([number_emotes[int(a)] for a in str(addr)])
     chng_emote = ''.join([number_emotes[int(a)] for a in str(chng)])
-    filename = st.text_input('File Name', f'{emoji[768]+acc_emote}/{addr_emote}/{chng_emote}')
+    filename = st.text_input('File Name', emoji[768]+acc_emote+addr_emote+chng_emote)
     data_string = dumps(address)
     st.download_button('Download', b64encode(bytes(data_string, 'utf-8')), f'{filename}.{emoji[126]}')
     st.divider()
