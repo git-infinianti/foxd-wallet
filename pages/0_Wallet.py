@@ -52,7 +52,7 @@ def is_new_wallet():
 
 def load_file() -> tuple[str]:
     def _wallet(*args) -> tuple[str]:
-        args = iter(args)
+        args = iter(list(args))
         acc = st.sidebar.number_input('Account', 0, None, next(args), 1)
         addr = st.sidebar.number_input('Address', 0, None, next(args), 1)
         chng = st.sidebar.number_input('Change', 0, None, next(args), 1)
