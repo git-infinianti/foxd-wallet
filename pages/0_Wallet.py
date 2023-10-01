@@ -41,33 +41,41 @@ def mnemonic_phrase():
 
 
 @cache
-def load_wallet():
+def is_new_wallet():
     wallet = st.file_uploader('Open Wallet', type=emoji[126])
     if wallet: 
         decoded_data = b64decode(wallet.read())
         st.session_state['loadwallet'] = loads(decoded_data)
         return False
     return True 
- 
 
-def display_wallet():
-    if load_wallet(): 
-        acc = st.sidebar.number_input('Account', 0, None, 'min', 1)
-        addr = st.sidebar.number_input('Address', 0, None, 'min', 1)
-        chng = st.sidebar.number_input('Change', 0, None, 'min', 1)
+
+def load_file() -> tuple[str]:
+    def _wallet(*args) -> tuple[str]: 
+        acc = st.sidebar.number_input('Account', 0, None, next(args), 1)
+        addr = st.sidebar.number_input('Address', 0, None, next(args), 1)
+        chng = st.sidebar.number_input('Change', 0, None, next(args), 1)
+        return acc, addr, chng
+    
+    if is_new_wallet(): 
+        acc, addr, chng = _wallet(*('min,'*3).split(',')[:-1])
         mnemonic = st.sidebar.text_input('Secret Words')
    
     else: 
         path = str(st.session_state['loadwallet']['path']).split('/')
-        acc = st.sidebar.number_input('Account', 0, None, int(path[3][0]), 1)
-        addr = st.sidebar.number_input('Address', 0, None, int(path[4]), 1)
-        chng = st.sidebar.number_input('Change', 0, None, int(path[5]), 1)
+        emote = [path[3][0], path[4], path[5]]
+        acc, addr, chng = _wallet(*emote)
         mnemonic = st.session_state['loadwallet']['mnemonic']
     
     if not mnemonic: 
         st.sidebar.divider()
         mnemonic = mnemonic_phrase()
         st.session_state['loadwallet'] = {'mnemonic': mnemonic}
+    return acc, addr, chng, mnemonic
+
+
+def display_wallet():
+    acc, addr, chng, mnemonic = load_file()
     
     password = st.sidebar.text_input('Passphrase')
 

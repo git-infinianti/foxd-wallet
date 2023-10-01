@@ -39,34 +39,32 @@ def encode_image():
     pass
 
 
-def asset(ftypes): return {
+def asset(ftype:list[str]): return {
 		'name': st.text_input('Name'),
 		'description': st.text_area('Description'),
 		'asset_type': st.selectbox('Asset Type', ['Main', 'Sub', 'Unique'], 2),
 		'tags': stt.st_tags(label='Tags', text='Press Enter to Create New Tag'),
         'restrictions': st.multiselect('Restrictions', ['Unissuable']),
-        'image': st.file_uploader('Image', ftypes)
+        'image': st.file_uploader('Image', ftype)
 	}
 
 
 def upload_nft():
-    c = 'cid'
-    filetypes = ['jpeg', 'jpg', 'png']
+    filetypes, c = ['jpeg', 'jpg', 'png'], 'cid'
     asset_data = asset(filetypes)
+    tag_desc = []
     if tags := asset_data['tags']:
-        for tag in tags:
-            st.sidebar.text_input(tag.capitalize())
+        for tag in tags: tag_desc.append(st.sidebar.text_input(tag.capitalize()))
     loaded_file = asset_data['image']
     if loaded_file: 
-        
         st.success(f'Image Loaded Successfully {emoji[296]}')
         st.image(Image.open(BytesIO(loaded_file.read())))
     if st.sidebar.button('UPLOAD') and loaded_file:
         with st.spinner():
             try:
-                st.session_state[c] = publish(loaded_file)
+                cid = publish(loaded_file)
                 st.success(f'Uploaded Successfully {emoji[296]}')
-                cid = st.session_state[c]
+                st.session_state[c] = cid
                 pin(cid)
                 st.code(cid)
                 return cid
