@@ -78,7 +78,8 @@ def display_wallet():
     password = st.sidebar.text_input('Passphrase')
 
     symbol = st.selectbox('Chain', ('FOXD', 'RVN', 'EVR', 'BTC', 'LTC', 'DOGE', 'ETH'))
-    match symbol:
+    
+    match symbol != '':
         case 'FOXD': e = 768
         case 'RVN': e = 708
         case 'EVR': e = 312
