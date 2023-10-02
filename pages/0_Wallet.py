@@ -77,7 +77,7 @@ def display_wallet():
     
     password = st.sidebar.text_input('Passphrase')
 
-    symbol = st.selectbox('Chain', ('FOXD', 'RVN', 'EVR'))
+    symbol = st.selectbox('Chain', ('FOXD', 'RVN', 'EVR', 'BTC', 'LTC', 'DOGE', 'ETH'))
     hdw = hdwallet(symbol)
     hdw = hdw.from_mnemonic(mnemonic, passphrase=password)
     
