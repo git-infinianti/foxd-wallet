@@ -26,11 +26,9 @@ LOGGER = get_logger(__name__)
 with open(f'emoji.json') as f: emoji = load(f)
 
 
-@cache
 def hdwallet(symbol): return HDWallet(symbol, get_cryptocurrency(symbol))
 
 
-@cache
 def mnemonic_phrase():
     lang = st.sidebar.text_input('Language', 'english', key='language').lower()
     strength = st.sidebar.select_slider('Security Strength', (128, 256), 128)
