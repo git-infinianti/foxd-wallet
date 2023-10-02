@@ -82,7 +82,7 @@ def display_wallet():
     hdw = hdw.from_mnemonic(mnemonic, passphrase=password)
     
     derivation = Derivation(f"m/44'/175'/{acc}'/{addr}/{chng}")
-    address = hdwallet.from_path(derivation).dumps()
+    address = hdw.from_path(derivation).dumps()
     
     number_emotes = [
         emoji[287], emoji[286], emoji[285], emoji[284], emoji[283], 
