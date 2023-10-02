@@ -79,7 +79,7 @@ def display_wallet():
     
     password = st.sidebar.text_input('Passphrase')
 
-    symbol = st.selectbox('Chain', ['FOXD', 'RVN', 'EVR'])
+    symbol = st.selectbox('Chain', ('FOXD', 'RVN', 'EVR'))
     hdwallet = hdwallet(symbol)
     hdwallet = hdwallet.from_mnemonic(mnemonic, passphrase=password)
     
