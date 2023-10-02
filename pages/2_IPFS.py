@@ -56,7 +56,7 @@ def tag_info(sstate, label, asset_data):
     tag_desc = []
     if tags := asset_data[label]:
         st.sidebar.title(label.upper())
-        for t in tags: tag_desc.append(st.sidebar.text_input(t))
+        for t in tags: tag_desc.append(st.sidebar.code(t))
         st.sidebar.divider()
     st.session_state[f'{sstate}_description'] = tag_desc
 
@@ -79,7 +79,7 @@ def upload_nft():
                 st.success(f'Uploaded Successfully {emoji[296]}')
                 st.session_state[c] = cid
                 pin(cid)
-                st.code(cid)
+                st.code(cid, None)
                 return cid
             except:
                 try:
