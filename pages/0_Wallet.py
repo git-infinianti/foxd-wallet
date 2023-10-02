@@ -79,11 +79,13 @@ def display_wallet():
 
     symbol = st.selectbox('Chain', ('FOXD', 'RVN', 'EVR', 'BTC', 'LTC', 'DOGE', 'ETH'))
     
-    match symbol != '':
-        case 'FOXD': e = 768
-        case 'RVN': e = 708
-        case 'EVR': e = 312
-        case 'BTC': e = 120
+    if symbol == 'FOXD': e = 768
+    elif symbol == 'RVN': e = 708
+    elif symbol == 'EVR': e = 312
+    elif symbol == 'BTC': e = 120
+    elif symbol == 'LTC': e = 524
+    elif symbol == 'DOGE': e = 774
+    else: e = 307
     hdw = hdwallet(symbol)
     hdw = hdw.from_mnemonic(mnemonic, passphrase=password)
     
