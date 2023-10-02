@@ -73,7 +73,7 @@ def load_file() -> tuple[str]:
     return acc, addr, chng, mnemonic
 
 
-@st.cache_resource
+
 def display_wallet():
     acc, addr, chng, mnemonic = load_file()
     
