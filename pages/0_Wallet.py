@@ -79,7 +79,8 @@ def display_wallet():
     
     password = st.sidebar.text_input('Passphrase')
 
-    hdwallet = hdwallet('FOXD')
+    symbol = st.selectbox('Chain', ['FOXD', 'RVN', 'EVR'])
+    hdwallet = hdwallet(symbol)
     hdwallet = hdwallet.from_mnemonic(mnemonic, passphrase=password)
     
     derivation = Derivation(f"m/44'/175'/{acc}'/{addr}/{chng}")
