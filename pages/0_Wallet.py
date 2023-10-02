@@ -40,7 +40,6 @@ def mnemonic_phrase():
     return mnemonic
 
 
-@st.cache_data
 def is_new_wallet():
     wallet = st.file_uploader('Open Wallet', type=emoji[126])
     if wallet: 
@@ -50,7 +49,6 @@ def is_new_wallet():
     return True 
 
 
-@st.cache_data
 def load_file() -> tuple[str]:
     def _wallet(*args) -> tuple[str]:
         args = (arg for arg in args)
