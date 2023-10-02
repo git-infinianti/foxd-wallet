@@ -27,7 +27,7 @@ with open(f'emoji.json') as f: emoji = load(f)
 
 
 @cache
-def hierarchical_deterministic_wallet(symbol): return HDWallet(symbol, get_cryptocurrency(symbol))
+def hdwallet(symbol): return HDWallet(symbol, get_cryptocurrency(symbol))
 
 
 @cache
@@ -40,7 +40,7 @@ def mnemonic_phrase():
     return mnemonic
 
 
-@cache
+@st.cache_data
 def is_new_wallet():
     wallet = st.file_uploader('Open Wallet', type=emoji[126])
     if wallet: 
@@ -50,7 +50,7 @@ def is_new_wallet():
     return True 
 
 
-
+@st.cache_data
 def load_file() -> tuple[str]:
     def _wallet(*args) -> tuple[str]:
         args = (arg for arg in args)
@@ -75,12 +75,13 @@ def load_file() -> tuple[str]:
     return acc, addr, chng, mnemonic
 
 
+@st.cache_resource
 def display_wallet():
     acc, addr, chng, mnemonic = load_file()
     
     password = st.sidebar.text_input('Passphrase')
 
-    hdwallet = hierarchical_deterministic_wallet('FOXD')
+    hdwallet = hdwallet('FOXD')
     hdwallet = hdwallet.from_mnemonic(mnemonic, passphrase=password)
     
     derivation = Derivation(f"m/44'/175'/{acc}'/{addr}/{chng}")
