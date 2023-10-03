@@ -43,9 +43,7 @@ def gen_key(sym: str, p2pkh:str, password: str):
         'passphrase': password,
         'key_type': cipher, 
         'key_curve': curve
-    }
-    master_key = new_gpg_key(**input_data)
-    gpg.add_subkey(master_key, password, curve); return master_key
+    }; return new_gpg_key(**input_data)
 
 
 def img_url(url): img = client.get(url).content; return urlsafe_b64encode(img).hex()
