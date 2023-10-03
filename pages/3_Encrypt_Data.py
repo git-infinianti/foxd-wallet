@@ -21,6 +21,7 @@ from httpx import Client
 from binascii import crc32
 from hashlib import sha256
 from base64 import urlsafe_b64encode
+from utils import CHAINS, get_chain_emoji, numeric_emoji
 
 gpg = GPG()
 LOGGER = get_logger(__name__)
@@ -64,9 +65,12 @@ def encrypt_img(img, fingerprint, password):
     return gpg.encrypt_file(img, fingerprint, passphrase=password, symmetric=True)
 
 
-def get_params():
-    st.text_input('Name')
-    st.text_input('Email')
+def display_encryptor():
+    symbol = st.sidebar.selectbox('Chain', CHAINS)
+    chain_emoji = get_chain_emoji(symbol)
+    
+    name = st.text_input('Name')
+    email = st.text_input('Email')
 
 
 def setup():
@@ -74,8 +78,7 @@ def setup():
     st.write('# Encrypter 🔏🔐')
     st.divider()
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
-    if st.sidebar.button('REFRESH'): st.rerun()
-    get_params()
+    display_encryptor()
 
 
 def encrypt_data():

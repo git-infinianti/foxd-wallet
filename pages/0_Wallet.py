@@ -21,6 +21,7 @@ from hdwallet.cryptocurrencies import get_cryptocurrency
 from json import dumps, load, loads
 from base64 import b64encode, b64decode
 import pyclip as cb
+from utils import CHAINS, get_chain_emoji, numeric_emoji
 
 LOGGER = get_logger(__name__)
 with open(f'emoji.json') as f: emoji = load(f)
@@ -75,37 +76,16 @@ def load_file() -> tuple[str]:
     return acc, addr, chng, mnemonic
 
 
-def get_chain(symbol):
-    
-    if symbol == 'FOXD': e = 768
-    elif symbol == 'RVN': e = 708
-    elif symbol == 'EVR': e = 312
-    elif symbol == 'BTC': e = 120
-    elif symbol == 'LTC': e = 524
-    elif symbol == 'DOGE': e = 774
-    else: e = 307
-    return e
-
-
-def numeric_emoji(account, address, change):
-    number_emotes = [
-        emoji[287], emoji[286], emoji[285], emoji[284], emoji[283], 
-        emoji[282], emoji[281], emoji[272], emoji[273], emoji[274]
-    ]
-    acc_emote = ''.join([number_emotes[int(a)] for a in str(account)])
-    addr_emote = ''.join([number_emotes[int(a)] for a in str(address)])
-    chng_emote = ''.join([number_emotes[int(a)] for a in str(change)])
-    return acc_emote, addr_emote, chng_emote
-
-
 def display_wallet():
     acc, addr, chng, mnemonic = load_file()
     acc_emote, addr_emote, chng_emote = numeric_emoji(acc, addr, chng)
     password = st.sidebar.text_input('Passphrase')
 
-    symbol = st.sidebar.selectbox('Chain', ('FOXD', 'RVN', 'EVR', 'BTC', 'LTC', 'DOGE', 'ETH'))
-    chain = get_chain(symbol)
+    # Chain Selection
+    symbol = st.sidebar.selectbox('Chain', CHAINS)
+    chain = get_chain_emoji(symbol)
     
+    # Generate Wallet
     hdw = hdwallet(symbol)
     hdw = hdw.from_mnemonic(mnemonic, passphrase=password)
     

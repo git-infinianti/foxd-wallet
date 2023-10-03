@@ -22,6 +22,8 @@ import streamlit as st
 RPCUSER = st.secrets['RPCUSER']
 RPCPASS = st.secrets['RPCPASS']
 
+with open('emoji.json') as f: emoji = load(f)
+
 
 def show_code(demo):
     """Showing the code of the demo."""
@@ -41,6 +43,29 @@ def load_script(filename):
 def load_style(filename):
     with open('style/{filename}.css') as f:
         st.markdown(f'<style>{f.read()}</style>', True)
+
+
+def get_chain_emoji(symbol):
+    if symbol == 'FOXD': e = 768
+    elif symbol == 'RVN': e = 708
+    elif symbol == 'EVR': e = 312
+    elif symbol == 'BTC': e = 120
+    elif symbol == 'LTC': e = 524
+    elif symbol == 'DOGE': e = 774
+    else: e = 307
+    return e
+
+CHAINS = 'FOXD', 'RVN', 'EVR', 'BTC', 'LTC', 'DOGE', 'ETH'
+
+def numeric_emoji(account, address, change):
+    number_emotes = [
+        emoji[287], emoji[286], emoji[285], emoji[284], emoji[283], 
+        emoji[282], emoji[281], emoji[272], emoji[273], emoji[274]
+    ]
+    acc_emote = ''.join([number_emotes[int(a)] for a in str(account)])
+    addr_emote = ''.join([number_emotes[int(a)] for a in str(address)])
+    chng_emote = ''.join([number_emotes[int(a)] for a in str(change)])
+    return acc_emote, addr_emote, chng_emote
 
 
 def pipe(method: str, *args) -> dict[str] | None:
