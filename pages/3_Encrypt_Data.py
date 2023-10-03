@@ -76,7 +76,8 @@ def setup():
     
     global encode; encode = st.sidebar.selectbox('Encoding', ['ascii', 'utf-8'])
     global cipher; cipher = st.sidebar.selectbox('Cipher', ['RSA', 'DSA', 'ElGamal', 'EdDSA', 'ECDH', 'ECDSA'])
-    global curve; c = ['nistp256', 'nistp384', 'nistp521', 'brainpoolP256r1', 'brainpoolP384r1', 'brainpoolP512r1', 'secp256k1']
+    global curve
+    c = ['nistp256', 'nistp384', 'nistp521', 'brainpoolP256r1', 'brainpoolP384r1', 'brainpoolP512r1', 'secp256k1']
     if cipher == 'ECDSA': curve = st.sidebar.selectbox('Curve', c, 6)
     elif cipher == 'EdDSA': curve = st.sidebar.selectbox('Curve', ['ed25519', 'ed448'])
     else: curve = st.sidebar.selectbox('Curve', ['cv25519', 'cv448'] + c)
