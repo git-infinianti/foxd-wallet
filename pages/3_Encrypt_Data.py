@@ -25,9 +25,6 @@ from utils import CHAINS, get_chain_emoji, numeric_emoji
 
 gpg = GPG()
 LOGGER = get_logger(__name__)
-encode = st.sidebar.selectbox('Encoding', ['ascii'])
-cipher = st.sidebar.selectbox('Cipher', ['ECDSA'])
-curve = st.sidebar.selectbox('Curve', ['secp256k1'])
 client = Client()
 with open('emoji.json') as f: emoji = load(f)
 
@@ -78,6 +75,11 @@ def setup():
     st.write('# Encrypter 🔏🔐')
     st.divider()
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
+    
+    global encode; encode = st.sidebar.selectbox('Encoding', ['ascii'])
+    global cipher; cipher = st.sidebar.selectbox('Cipher', ['ECDSA'])
+    global curve; curve = st.sidebar.selectbox('Curve', ['secp256k1'])
+    
     display_encryptor()
 
 
