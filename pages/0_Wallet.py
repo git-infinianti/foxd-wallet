@@ -77,14 +77,15 @@ def load_file() -> tuple[str]:
 
 
 def display_wallet():
+    # Chain Selection
+    symbol = st.sidebar.selectbox('Chain', CHAINS)
+    chain = get_chain_emoji(symbol)
+
     acc, addr, chng, mnemonic = load_file()
     acc_emote, addr_emote, chng_emote = numeric_emoji(acc, addr, chng)
     password = st.sidebar.text_input('Passphrase')
 
-    # Chain Selection
-    symbol = st.sidebar.selectbox('Chain', CHAINS)
-    chain = get_chain_emoji(symbol)
-    
+
     # Generate Wallet
     hdw = hdwallet(symbol)
     hdw = hdw.from_mnemonic(mnemonic, passphrase=password)
