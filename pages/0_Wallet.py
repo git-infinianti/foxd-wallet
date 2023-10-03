@@ -25,8 +25,8 @@ import pyclip as cb
 LOGGER = get_logger(__name__)
 with open(f'emoji.json') as f: emoji = load(f)
 
-import subprocess
-subprocess.run('sudo apt install wl-clipboard')
+# import subprocess
+# subprocess.run('sudo apt install wl-clipboard')
 
 def hdwallet(symbol): return HDWallet(symbol, get_cryptocurrency(symbol))
 
