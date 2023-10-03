@@ -63,25 +63,26 @@ def encrypt_img(img, fingerprint, password):
 def display_encryptor():
     symbol = st.sidebar.selectbox('Chain', CHAINS)
     address = st.text_input('Name', placeholder='P2PKH Address')
+    address = st.text_input('Email', placeholder='P2PKH Address')
     password = st.text_input('Password', placeholder='Passphrase')
     submit = st.button('Submit')
     if submit and address: st.code(gen_key(symbol, address, password), None)
 
 
 def setup():
-    st.set_page_config(page_title='Encrypt Data', page_icon='🔐')
-    st.write('# Encrypter 🔏🔐')
+    st.set_page_config(page_title='GnuPG', page_icon='🔐')
+    st.write('# GnuPG Encryption 🔏🔐')
     st.divider()
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
     
     global encode; encode = st.sidebar.selectbox('Encoding', ['ascii', 'utf-8'])
-    global cipher; cipher = st.sidebar.selectbox('Cipher', ['RSA', 'DSA', 'ElGamal', 'EdDSA', 'ECDH', 'ECDSA'], 5)
+    global cipher; cipher = st.sidebar.selectbox('Cipher', ['RSA', 'DSA', 'ECDH', 'ElGamal', 'EdDSA', 'ECDSA'], 5)
     
     global curve
     c = ['nistp256', 'nistp384', 'nistp521', 'brainpoolP256r1', 'brainpoolP384r1', 'brainpoolP512r1', 'secp256k1']
     if cipher == 'ECDSA': curve = st.sidebar.selectbox('Curve', c, 6)
     elif cipher == 'EdDSA': curve = st.sidebar.selectbox('Curve', ['ed25519', 'ed448'])
-    else: curve = st.sidebar.selectbox('Curve', ['cv25519', 'cv448'] + c)
+    else: curve = st.sidebar.selectbox('Curve', c + ['cv25519', 'cv448'])
     
     gpg.encoding = encode
     display_encryptor()
