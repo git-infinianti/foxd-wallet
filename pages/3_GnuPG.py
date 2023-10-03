@@ -50,7 +50,7 @@ def gen_key(sym: str, p2pkh:str, password: str):
 
 def img_file():
     file = st.file_uploader('Image to Encrypt', type=FILETYPES)
-    return urlsafe_b64encode(file.read()).hex()
+    if file: return urlsafe_b64encode(file.read()).hex()
 
 
 def encrypt_files(fpath, recipients, signer_fingerprint, pw:str, cipher_algorithm): 
@@ -80,7 +80,7 @@ def setup():
     global cipher; cipher = st.sidebar.selectbox('Cipher', ['RSA', 'DSA', 'ECDH', 'ElGamal', 'EdDSA', 'ECDSA'], 5)
     
     global curve
-    bits = st.sidebar.slider('bits', 2048, 4096, 1024)
+    bits = st.sidebar.select_slider('bits', [2048, 3072, 4096])
     c = ['nistp256', 'nistp384', 'nistp521', 'brainpoolP256r1', 'brainpoolP384r1', 'brainpoolP512r1', 'secp256k1']
     if cipher == 'ECDSA': curve = st.sidebar.selectbox('Curve', c, 6)
     elif cipher == 'EdDSA': curve = st.sidebar.selectbox('Curve', ['ed25519', 'ed448'])
