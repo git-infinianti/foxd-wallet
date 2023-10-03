@@ -68,7 +68,7 @@ def numeric_emoji(account, address, change):
     return acc_emote, addr_emote, chng_emote
 
 
-def pipe(method: str, *args) -> dict[str] | None:
+def pipe(method: str, *args):
     APPEXEC = st.secrets['APPEXEC']
     res = run((APPEXEC, f'-rpcuser={RPCUSER}', f'-rpcpassword={RPCPASS}', method, *args), stdout=PIPE)
 
@@ -79,7 +79,7 @@ def pipe(method: str, *args) -> dict[str] | None:
 
 class RPC:
     with open('commands.json') as f: commands = load(f)
-    def __init__(self, port) -> None:
+    def __init__(self, port):
         cli = Client(
             auth = (RPCUSER, RPCPASS),
             headers = {'content-type': 'application/json'}
