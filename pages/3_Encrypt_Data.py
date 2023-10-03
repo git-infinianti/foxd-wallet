@@ -77,7 +77,6 @@ def display_encryptor():
 
 
 def setup():
-    gpg.encoding = encode
     st.set_page_config(page_title='Encrypt Data', page_icon='🔐')
     st.write('# Encrypter 🔏🔐')
     st.divider()
@@ -86,7 +85,7 @@ def setup():
     global encode; encode = st.sidebar.selectbox('Encoding', ['ascii'])
     global cipher; cipher = st.sidebar.selectbox('Cipher', ['ECDSA'])
     global curve; curve = st.sidebar.selectbox('Curve', ['secp256k1'])
-    
+    gpg.encoding = encode
     display_encryptor()
 
 
