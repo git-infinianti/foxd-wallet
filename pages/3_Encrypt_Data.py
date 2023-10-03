@@ -64,10 +64,14 @@ def encrypt_img(img, fingerprint, password):
 
 def display_encryptor():
     symbol = st.sidebar.selectbox('Chain', CHAINS)
-    chain_emoji = get_chain_emoji(symbol)
     
-    name = st.text_input('Name')
-    email = st.text_input('Email')
+    #chain_emoji = get_chain_emoji(symbol)
+    # name = st.text_input('Name')
+    # email = st.text_input('Email')
+    
+    address = st.text_input('Address')
+    password = st.text_input('Password')
+    gen_key(symbol, address, password)
 
 
 def setup():
