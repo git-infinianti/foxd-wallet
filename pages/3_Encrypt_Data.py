@@ -71,7 +71,7 @@ def display_encryptor():
     address = st.text_input('Name', placeholder='P2PKH Address')
     password = st.text_input('Password')
     submit = st.button('Submit')
-    if submit: gen_key(symbol, address, password)
+    if submit and address: gen_key(symbol, address, password)
 
 
 def setup():
