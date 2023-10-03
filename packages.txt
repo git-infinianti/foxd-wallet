@@ -1,2 +1,3 @@
 xclip
 wl-clipboard
+gnupg
