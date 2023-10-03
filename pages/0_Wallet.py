@@ -20,7 +20,7 @@ from hdwallet.cryptocurrencies import get_cryptocurrency
 
 from json import dumps, load, loads
 from base64 import b64encode, b64decode
-from functools import cache
+import pyclip as cb
 
 LOGGER = get_logger(__name__)
 with open(f'emoji.json') as f: emoji = load(f)
@@ -33,6 +33,7 @@ def mnemonic_phrase():
     lang = st.sidebar.text_input('Language', 'english', key='language').lower()
     strength = st.sidebar.select_slider('Security Strength', (128, 256), 128)
     mnemonic = utils.generate_mnemonic(lang, strength)
+    cb.copy(mnemonic)
     st.code(mnemonic, None)
     st.divider()
     return mnemonic
@@ -57,12 +58,13 @@ def load_file() -> tuple[str]:
     if is_new_wallet(): 
         acc, addr, chng = _wallet(*('min,'*3).split(',')[:-1])
         mnemonic = st.sidebar.text_input('Secret Words')
-   
+        cb.copy(mnemonic)
     else: 
         path = str(st.session_state['loadwallet']['path']).split('/')
         emote = [int(path[3][0]), int(path[4]), int(path[5])]
         acc, addr, chng = _wallet(*emote)
         mnemonic = st.session_state['loadwallet']['mnemonic']
+        cb.copy(mnemonic)
     
     if not mnemonic: 
         st.sidebar.divider()
