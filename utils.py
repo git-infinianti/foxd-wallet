@@ -73,7 +73,7 @@ def pipe(method: str, *args):
     APPEXEC = st.secrets['APPEXEC']
     res = run((APPEXEC, f'-rpcuser={RPCUSER}', f'-rpcpassword={RPCPASS}', method, *args), stdout=PIPE)
     ret = res.stdout.strip().decode('utf-8')
-    if not len(ret): return
+    if not ret: return
     else: return loads(ret)
 
 
