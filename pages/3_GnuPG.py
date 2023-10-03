@@ -48,9 +48,13 @@ def gen_key(sym: str, p2pkh:str, password: str):
     }; return new_gpg_key(**input_data)
 
 
-def img_file():
+def encrypt_file():
     file = st.file_uploader('Image to Encrypt', type=FILETYPES)
     if file: return urlsafe_b64encode(file.read()).hex()
+
+def display_encrypted_file():
+    data = encrypt_file()
+    st.write(data)
 
 
 def encrypt_files(fpath, recipients, signer_fingerprint, pw:str, cipher_algorithm): 
@@ -88,7 +92,7 @@ def setup():
     
     gpg.encoding = encode
     display_encryptor()
-    img_file()
+    encrypt_file()
 
 
 def encrypt_data():
