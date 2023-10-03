@@ -19,6 +19,9 @@ from httpx import Client
 from subprocess import run, PIPE
 import streamlit as st
 
+RPCUSER = st.secrets['RPCUSER']
+RPCPASS = st.secrets['RPCPASS']
+
 
 def show_code(demo):
     """Showing the code of the demo."""
@@ -41,9 +44,7 @@ def load_style(filename):
 
 
 def pipe(method: str, *args) -> dict[str] | None:
-    APPEXEC = st.secrets('APPEXEC')
-    RPCUSER = st.secrets('RPCUSER')
-    RPCPASS = st.secrets('RPCPASS')
+    APPEXEC = st.secrets['APPEXEC']
     res = run((APPEXEC, f'-rpcuser={RPCUSER}', f'-rpcpassword={RPCPASS}', method, *args), stdout=PIPE)
 
     ret = res.stdout.strip().decode('utf-8')
@@ -53,25 +54,27 @@ def pipe(method: str, *args) -> dict[str] | None:
 
 class RPC:
     with open('commands.json') as f: commands = load(f)
-    def __init__(self, username, password, port) -> None:
-        self.cli = Client(
-            auth = (username, password),
+    def __init__(self, port) -> None:
+        cli = Client(
+            auth = (RPCUSER, RPCPASS),
             headers = {'content-type': 'application/json'}
         )
-        self.__call__: function = lambda method, parameters: self.cli.post(
+        self.__call__: function = lambda method, *params: cli.post(
             f'http://localhost:{port}', 
             json = {
                 'jsonrpc': '1.0',
                 'id': 'python',
                 'method': method,
-                'params': list(parameters)
+                'params': list(*params)
             }
         ).json()['result']
-        __all__ = self.commands     
+
     def __dir__(self): return self.commands
+    
     def __call__(self, method: str, *args) -> dict:
-        return self.__call__(method, list(args))
+        return self.__call__(method, *args)
     
     def __getattr__(self, method: str):
-        def command(*args): return self.__call__(method, list(args))
-        return command
+        def command(*args): return self(method, *args)
+        setattr(self, method, command)
+        return lambda *args: self(method, *args)

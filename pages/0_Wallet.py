@@ -70,8 +70,7 @@ def load_file() -> tuple[str]:
         mnemonic = mnemonic_phrase()
         
         st.session_state['loadwallet'] = {'mnemonic': mnemonic}
-    try: cb.copy(mnemonic)
-    except: pass
+    cb.copy(mnemonic)
     return acc, addr, chng, mnemonic
 
 
