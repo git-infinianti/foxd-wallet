@@ -33,6 +33,7 @@ gpg = GPG()
 def sign(metadata): return sha256(bytes(dumps(metadata), 'ascii')).hexdigest()
 def p2pkh_chksum(p2pkh): return hex(crc32(bytes(p2pkh, encode)))
 def get_pgp_block(fp: str): return gpg.export_keys(fp, expect_passphrase=False)
+def img_url(url): img = client.get(url).content; return urlsafe_b64encode(img).hex()
 
 
 def gen_key(sym: str, p2pkh:str, password: str):
@@ -44,9 +45,6 @@ def gen_key(sym: str, p2pkh:str, password: str):
         'key_type': cipher, 
         'key_curve': curve
     }; return new_gpg_key(**input_data)
-
-
-def img_url(url): img = client.get(url).content; return urlsafe_b64encode(img).hex()
 
 
 def img_file():
@@ -64,14 +62,10 @@ def encrypt_img(img, fingerprint, password):
 
 def display_encryptor():
     symbol = st.sidebar.selectbox('Chain', CHAINS)
-    
-    #chain_emoji = get_chain_emoji(symbol)
-    # email = st.text_input('Email')
-    
     address = st.text_input('Name', placeholder='P2PKH Address')
-    password = st.text_input('Password')
+    password = st.text_input('Password', placeholder='Passphrase')
     submit = st.button('Submit')
-    if submit and address: gen_key(symbol, address, password)
+    if submit and address: st.code(gen_key(symbol, address, password), None)
 
 
 def setup():
