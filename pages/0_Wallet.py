@@ -25,6 +25,8 @@ import pyclip as cb
 LOGGER = get_logger(__name__)
 with open(f'emoji.json') as f: emoji = load(f)
 
+import subprocess
+subprocess.run('apt install xclip')
 
 def hdwallet(symbol): return HDWallet(symbol, get_cryptocurrency(symbol))
 
