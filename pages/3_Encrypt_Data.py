@@ -23,11 +23,12 @@ from hashlib import sha256
 from base64 import urlsafe_b64encode
 from utils import CHAINS, get_chain_emoji, numeric_emoji
 
-gpg = GPG()
+
 LOGGER = get_logger(__name__)
 client = Client()
 with open('emoji.json') as f: emoji = load(f)
-
+gpg = GPG()
+gpg.encoding = encode
 
 def sign(metadata): return sha256(bytes(dumps(metadata), 'ascii')).hexdigest()
 def p2pkh_chksum(p2pkh): return hex(crc32(bytes(p2pkh, encode)))
@@ -38,12 +39,13 @@ def gen_key(sym: str, p2pkh:str, password: str):
     def new_gpg_key(**kwargs): return gpg.gen_key(gpg.gen_key_input(**kwargs))
     input_data = {
         'name_real': p2pkh, 
-        'name_email': f'{p2pkh}@{str(sym).lower()}.coin',
+        'name_email': f'{p2pkh}@{sym.lower()}.coin',
         'passphrase': password,
         'key_type': cipher, 
         'key_curve': curve
     }
-    gpg.add_subkey(fp := str(new_gpg_key(**input_data)), password, curve); return fp
+    master_key = new_gpg_key(**input_data)
+    gpg.add_subkey(master_key, password, curve); return master_key
 
 
 def img_url(url): img = client.get(url).content; return urlsafe_b64encode(img).hex()
