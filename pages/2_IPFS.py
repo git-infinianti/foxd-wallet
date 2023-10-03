@@ -43,7 +43,7 @@ def asset(ftype:list[str]):
     txt = 'Press Enter After Each Tag'
     return {
 		'name': st.text_input('Name', placeholder='Title'),
-		'description': st.text_area('Description', placeholder='Give info about your NFT.'),
+		'description': st.text_area('Description', placeholder='Describe the NFT, be Descriptive.'),
 		'asset_type': st.selectbox('Asset Type', ['Main', 'Sub', 'Unique'], 2),
         'tags': stt.st_tags(label='Tags', text=txt),
 		'permissions': stt.st_tags(label='Permissions', text=txt),
