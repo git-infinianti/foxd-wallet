@@ -5,7 +5,7 @@ altair
 numpy
 pandas
 pydeck
-rembg
+pyclip
 httpx
 IPFS-Toolkit
 python-gnupg
