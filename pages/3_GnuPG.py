@@ -21,7 +21,7 @@ from httpx import Client
 from binascii import crc32
 from hashlib import sha256
 from base64 import urlsafe_b64encode
-from utils import CHAINS, get_chain_emoji, numeric_emoji
+from utils import CHAINS, FILETYPES, get_chain_emoji, numeric_emoji
 
 
 LOGGER = get_logger(__name__)
@@ -38,6 +38,7 @@ def img_url(url): img = client.get(url).content; return urlsafe_b64encode(img).h
 
 def gen_key(sym: str, p2pkh:str, password: str):
     def new_gpg_key(**kwargs): return gpg.gen_key(gpg.gen_key_input(**kwargs))
+    global input_data
     input_data = {
         'name_real': p2pkh, 
         'name_email': f'{p2pkh}@{sym.lower()}.coin',
@@ -48,7 +49,7 @@ def gen_key(sym: str, p2pkh:str, password: str):
 
 
 def img_file():
-    img = st.image()
+    img = st.file_uploader('Image to Encrypt', type=FILETYPES)
     with open(img, 'rb') as file: return urlsafe_b64encode(file.read()).hex()
 
 
@@ -63,7 +64,7 @@ def encrypt_img(img, fingerprint, password):
 def display_encryptor():
     symbol = st.sidebar.selectbox('Chain', CHAINS)
     address = st.text_input('Name', placeholder='P2PKH Address')
-    address = st.text_input('Email', placeholder='P2PKH Address')
+    email = st.text_input('Email', placeholder='P2PKH Address')
     password = st.text_input('Password', placeholder='Passphrase')
     submit = st.button('Submit')
     if submit and address: st.code(gen_key(symbol, address, password), None)
@@ -79,6 +80,7 @@ def setup():
     global cipher; cipher = st.sidebar.selectbox('Cipher', ['RSA', 'DSA', 'ECDH', 'ElGamal', 'EdDSA', 'ECDSA'], 5)
     
     global curve
+    bits = st.sidebar.slider('bits', 2048, 4096, 1024)
     c = ['nistp256', 'nistp384', 'nistp521', 'brainpoolP256r1', 'brainpoolP384r1', 'brainpoolP512r1', 'secp256k1']
     if cipher == 'ECDSA': curve = st.sidebar.selectbox('Curve', c, 6)
     elif cipher == 'EdDSA': curve = st.sidebar.selectbox('Curve', ['ed25519', 'ed448'])
@@ -86,6 +88,7 @@ def setup():
     
     gpg.encoding = encode
     display_encryptor()
+    img_file()
 
 
 def encrypt_data():

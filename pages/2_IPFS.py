@@ -19,7 +19,7 @@ from httpx import Client
 from ipfs_api import publish, pin
 from json import load, loads
 from PIL import Image
-
+from utils import FILETYPES
 
 LOGGER = get_logger(__name__)
 with open('emoji.json') as f: emoji = load(f)
@@ -62,8 +62,8 @@ def tag_info(sstate, label, asset_data):
 
 
 def upload_nft():
-    filetypes, c = ['jpeg', 'jpg', 'png'], 'cid'
-    asset_data = asset(filetypes)
+    c = 'cid'
+    asset_data = asset(FILETYPES)
     tag_info(t:='tag',         t+'s', asset_data)
     tag_info(p:='permission',  p+'s', asset_data)
     tag_info(r:='restriction', r+'s', asset_data)
