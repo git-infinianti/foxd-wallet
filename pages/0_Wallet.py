@@ -75,13 +75,7 @@ def load_file() -> tuple[str]:
     return acc, addr, chng, mnemonic
 
 
-
-def display_wallet():
-    acc, addr, chng, mnemonic = load_file()
-    
-    password = st.sidebar.text_input('Passphrase')
-
-    symbol = st.sidebar.selectbox('Chain', ('FOXD', 'RVN', 'EVR', 'BTC', 'LTC', 'DOGE', 'ETH'))
+def get_chain(symbol):
     
     if symbol == 'FOXD': e = 768
     elif symbol == 'RVN': e = 708
@@ -90,20 +84,36 @@ def display_wallet():
     elif symbol == 'LTC': e = 524
     elif symbol == 'DOGE': e = 774
     else: e = 307
+    return e
+
+
+def numeric_emoji(account, address, change):
+    number_emotes = [
+        emoji[287], emoji[286], emoji[285], emoji[284], emoji[283], 
+        emoji[282], emoji[281], emoji[272], emoji[273], emoji[274]
+    ]
+    acc_emote = ''.join([number_emotes[int(a)] for a in str(account)])
+    addr_emote = ''.join([number_emotes[int(a)] for a in str(address)])
+    chng_emote = ''.join([number_emotes[int(a)] for a in str(change)])
+    return acc_emote, addr_emote, chng_emote
+
+
+def display_wallet():
+    acc, addr, chng, mnemonic = load_file()
+    acc_emote, addr_emote, chng_emote = numeric_emoji(acc, addr, chng)
+    password = st.sidebar.text_input('Passphrase')
+
+    symbol = st.sidebar.selectbox('Chain', ('FOXD', 'RVN', 'EVR', 'BTC', 'LTC', 'DOGE', 'ETH'))
+    chain = get_chain(symbol)
+    
     hdw = hdwallet(symbol)
     hdw = hdw.from_mnemonic(mnemonic, passphrase=password)
     
     derivation = Derivation(f"m/44'/175'/{acc}'/{addr}/{chng}")
     address = hdw.from_path(derivation).dumps()
     
-    number_emotes = [
-        emoji[287], emoji[286], emoji[285], emoji[284], emoji[283], 
-        emoji[282], emoji[281], emoji[272], emoji[273], emoji[274]
-    ]
-    acc_emote = ''.join([number_emotes[int(a)] for a in str(acc)])
-    addr_emote = ''.join([number_emotes[int(a)] for a in str(addr)])
-    chng_emote = ''.join([number_emotes[int(a)] for a in str(chng)])
-    filename = st.text_input('File Name', f'{emoji[e]+acc_emote}/{addr_emote}/{chng_emote}')
+    
+    filename = st.text_input('File Name', f'{emoji[chain]+acc_emote}/{addr_emote}/{chng_emote}')
     data_string = dumps(address)
     st.download_button('Download', b64encode(bytes(data_string, 'utf-8')), f'{filename}.{emoji[126]}')
     st.divider()

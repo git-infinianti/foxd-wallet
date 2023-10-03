@@ -36,9 +36,6 @@ def p2pkh_chksum(p2pkh): return hex(crc32(bytes(p2pkh, ENCODE)))
 def get_pgp_block(fp: str): return gpg.export_keys(fp, expect_passphrase=False)
 
 
-
-
-
 def gen_key(sym: str, p2pkh:str, password: str):
     def new_gpg_key(**kwargs): return gpg.gen_key(gpg.gen_key_input(**kwargs))
     input_data = {
