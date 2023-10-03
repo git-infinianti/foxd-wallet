@@ -49,8 +49,8 @@ def gen_key(sym: str, p2pkh:str, password: str):
 
 
 def img_file():
-    img = st.file_uploader('Image to Encrypt', type=FILETYPES)
-    with open(img, 'rb') as file: return urlsafe_b64encode(file.read()).hex()
+    file = st.file_uploader('Image to Encrypt', type=FILETYPES)
+    return urlsafe_b64encode(file.read()).hex()
 
 
 def encrypt_files(fpath, recipients, signer_fingerprint, pw:str, cipher_algorithm): 
