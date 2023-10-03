@@ -25,15 +25,15 @@ from utils import CHAINS, get_chain_emoji, numeric_emoji
 
 gpg = GPG()
 LOGGER = get_logger(__name__)
-ENCODE = 'ascii'
-CIPHER = 'ECDSA'
-CURVE = 'secp256k1'
+encode = st.sidebar.selectbox('Encoding', ['ascii'])
+cipher = st.sidebar.selectbox('Cipher', ['ECDSA'])
+curve = st.sidebar.selectbox('Curve', ['secp256k1'])
 client = Client()
 with open('emoji.json') as f: emoji = load(f)
 
 
 def sign(metadata): return sha256(bytes(dumps(metadata), 'ascii')).hexdigest()
-def p2pkh_chksum(p2pkh): return hex(crc32(bytes(p2pkh, ENCODE)))
+def p2pkh_chksum(p2pkh): return hex(crc32(bytes(p2pkh, encode)))
 def get_pgp_block(fp: str): return gpg.export_keys(fp, expect_passphrase=False)
 
 
@@ -43,10 +43,10 @@ def gen_key(sym: str, p2pkh:str, password: str):
         'name_real': p2pkh, 
         'name_email': f'{p2pkh}@{str(sym).lower()}.coin',
         'passphrase': password,
-        'key_type': CIPHER, 
-        'key_curve': CURVE
+        'key_type': cipher, 
+        'key_curve': curve
     }
-    gpg.add_subkey(fp := str(new_gpg_key(**input_data)), password, CURVE); return fp
+    gpg.add_subkey(fp := str(new_gpg_key(**input_data)), password, curve); return fp
 
 
 def img_url(url): img = client.get(url).content; return urlsafe_b64encode(img).hex()
