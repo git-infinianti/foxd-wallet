@@ -74,9 +74,11 @@ def setup():
     st.divider()
     st.markdown('<style>footer {visibility: hidden;} #MainMenu {visibility: hidden;}</style>', True)
     
-    global encode; encode = st.sidebar.selectbox('Encoding', ['ascii'])
-    global cipher; cipher = st.sidebar.selectbox('Cipher', ['ECDSA'])
-    global curve; curve = st.sidebar.selectbox('Curve', ['secp256k1'])
+    global encode; encode = st.sidebar.selectbox('Encoding', ['ascii', 'utf-8'])
+    global cipher; cipher = st.sidebar.selectbox('Cipher', ['ECDSA', 'EdDSA', 'ECDH', 'RSA', 'DSA', 'ElGamal'])
+    if cipher == 'ECDSA': global curve; curve = st.sidebar.selectbox('Curve', c:=['nistp256', 'nistp384', 'nistp521', 'brainpoolP256r1', 'brainpoolP384r1', 'brainpoolP512r1', 'secp256k1'], -1)
+    elif cipher == 'EdDSA': global curve; curve = st.sidebar.selectbox('Curve', ['ed25519', 'ed448'])
+    else: global curve; curve = st.sidebar.selectbox('Curve', ['cv25519', 'cv448']+c)
     gpg.encoding = encode
     display_encryptor()
 
