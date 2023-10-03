@@ -68,10 +68,9 @@ def display_encryptor():
     symbol = st.sidebar.selectbox('Chain', CHAINS)
     
     #chain_emoji = get_chain_emoji(symbol)
-    # name = st.text_input('Name')
     # email = st.text_input('Email')
     
-    address = st.text_input('Address')
+    address = st.text_input('Name', placeholder='P2PKH Address')
     password = st.text_input('Password')
     submit = st.button('Submit')
     if submit: gen_key(symbol, address, password)
