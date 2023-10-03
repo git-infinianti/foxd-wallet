@@ -28,7 +28,7 @@ LOGGER = get_logger(__name__)
 client = Client()
 with open('emoji.json') as f: emoji = load(f)
 gpg = GPG()
-gpg.encoding = encode
+
 
 def sign(metadata): return sha256(bytes(dumps(metadata), 'ascii')).hexdigest()
 def p2pkh_chksum(p2pkh): return hex(crc32(bytes(p2pkh, encode)))
@@ -77,6 +77,7 @@ def display_encryptor():
 
 
 def setup():
+    gpg.encoding = encode
     st.set_page_config(page_title='Encrypt Data', page_icon='🔐')
     st.write('# Encrypter 🔏🔐')
     st.divider()
