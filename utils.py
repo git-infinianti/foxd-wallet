@@ -21,6 +21,7 @@ import streamlit as st
 
 RPCUSER = st.secrets['RPCUSER']
 RPCPASS = st.secrets['RPCPASS']
+FILETYPES = ['jpeg', 'jpg', 'png']
 
 with open('emoji.json') as f: emoji = load(f)
 
@@ -71,9 +72,8 @@ def numeric_emoji(account, address, change):
 def pipe(method: str, *args):
     APPEXEC = st.secrets['APPEXEC']
     res = run((APPEXEC, f'-rpcuser={RPCUSER}', f'-rpcpassword={RPCPASS}', method, *args), stdout=PIPE)
-
     ret = res.stdout.strip().decode('utf-8')
-    if len(ret) == 0: return
+    if not len(ret): return
     else: return loads(ret)
 
 
@@ -96,8 +96,7 @@ class RPC:
 
     def __dir__(self): return self.commands
     
-    def __call__(self, method: str, *args) -> dict:
-        return self.__call__(method, *args)
+    def __call__(self, method: str, *args) -> dict: return self(method, *args)
     
     def __getattr__(self, method: str):
         def command(*args): return self(method, *args)
