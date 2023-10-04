@@ -100,6 +100,7 @@ def display_wallet():
     st.download_button('Download', b64encode(bytes(data_string, 'utf-8')), f'{filename}.{emoji[126]}')
     st.divider()
     st.image(client.get(f'/qr/{address["addresses"]["p2pkh"]}').content)
+    st.code(address["addresses"]["p2pkh"], language=None)
     address_info = loads(client.get(f'/ext/getaddress/{address["addresses"]["p2pkh"]}').text)
     if 'error' not in address_info: st.write(address_info)
     st.write(address)
