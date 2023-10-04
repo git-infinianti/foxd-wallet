@@ -69,9 +69,10 @@ def display_encryptor():
     symbol = st.sidebar.selectbox('Chain', CHAINS)
     address = st.text_input('Name', placeholder='P2PKH Address')
     email = st.text_input('Email', placeholder='P2PKH Address')
-    password = st.text_input('Password', placeholder='Passphrase')
+    password = st.text_input('Password', type='password', placeholder='Passphrase')
     submit = st.button('Submit')
     if submit and address: st.code(gen_key(symbol, address, password), None)
+    st.divider()
 
 
 def setup():

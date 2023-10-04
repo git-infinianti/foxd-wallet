@@ -22,6 +22,7 @@ import streamlit as st
 RPCUSER = st.secrets['RPCUSER']
 RPCPASS = st.secrets['RPCPASS']
 FILETYPES = ['jpeg', 'jpg', 'png']
+TAGTYPES = ['AET', 'ANT', 'AIT']
 
 with open('emoji.json') as f: emoji = load(f)
 
