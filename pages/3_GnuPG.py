@@ -17,15 +17,15 @@ from streamlit.logger import get_logger
 from json import load, dumps
 from gnupg import GPG
 
-from httpx import Client
+from httpx import AsyncClient
 from binascii import crc32
 from hashlib import sha256
 from base64 import urlsafe_b64encode
-from utils import CHAINS, FILETYPES, get_chain_emoji, numeric_emoji
+from utils import CHAINS, FILETYPES, TAGTYPES, get_chain_emoji, numeric_emoji
 
 
 LOGGER = get_logger(__name__)
-client = Client()
+client = AsyncClient()
 with open('emoji.json') as f: emoji = load(f)
 gpg = GPG()
 
@@ -38,10 +38,12 @@ def img_url(url): img = client.get(url).content; return urlsafe_b64encode(img).h
 
 def gen_key(sym: str, p2pkh:str, password: str):
     def new_gpg_key(**kwargs): return gpg.gen_key(gpg.gen_key_input(**kwargs))
+    email = st.text_input('Email', f'{p2pkh}@{sym.lower()}.coin', placeholder='P2PKH Address')
+    
     global input_data
     input_data = {
         'name_real': p2pkh, 
-        'name_email': f'{p2pkh}@{sym.lower()}.coin',
+        'name_email': email,
         'passphrase': password,
         'key_type': cipher, 
         'key_curve': curve
@@ -68,10 +70,10 @@ def encrypt_img(img, fingerprint, password):
 def display_encryptor():
     symbol = st.sidebar.selectbox('Chain', CHAINS)
     address = st.text_input('Name', placeholder='P2PKH Address')
-    email = st.text_input('Email', placeholder='P2PKH Address')
     password = st.text_input('Password', type='password', placeholder='Passphrase')
     submit = st.button('Submit')
-    if submit and address: st.code(gen_key(symbol, address, password), None)
+    if address and password and submit: master_key = gen_key(symbol, address, password)
+    if submit and master_key: st.code(master_key, None)
     st.divider()
 
 

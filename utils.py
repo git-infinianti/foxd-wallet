@@ -15,7 +15,7 @@
 import inspect
 import textwrap
 from json import load, loads
-from httpx import Client
+from httpx import AsyncClient
 from subprocess import run, PIPE
 import streamlit as st
 
@@ -25,6 +25,35 @@ FILETYPES = ['jpeg', 'jpg', 'png']
 TAGTYPES = ['AET', 'ANT', 'AIT']
 
 with open('emoji.json') as f: emoji = load(f)
+
+
+def get_vin(*args):
+    args = (arg for arg in args)
+    vin = {
+        "txid": next(args),
+        "vout": next(args),
+        "scriptSig": {
+         "asm": next(args),
+         "hex": next(args)
+       },
+       "sequence": next(args),
+       "txinwitness": [*next(args)]
+    }; return vin
+
+
+def get_vout(*args):
+    args = (arg for arg in args)
+    vout = {
+        "value" : next(args),
+        "n" : next(args),
+        "scriptPubKey" : {
+         "asm" : next(args),
+         "hex" : next(args),
+         "reqSigs" : next(args),
+         "type" : next(args),
+         "addresses" : [*next(args)]
+       }
+    }; return vout
 
 
 def show_code(demo):
@@ -81,7 +110,7 @@ def pipe(method: str, *args):
 class RPC:
     with open('commands.json') as f: commands = load(f)
     def __init__(self, port):
-        cli = Client(
+        cli = AsyncClient(
             auth = (RPCUSER, RPCPASS),
             headers = {'content-type': 'application/json'}
         )

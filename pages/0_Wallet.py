@@ -20,12 +20,12 @@ from hdwallet.cryptocurrencies import get_cryptocurrency
 
 from json import dumps, load, loads
 from base64 import b64encode, b64decode
-from httpx import Client
+from httpx import AsyncClient
 import pyclip as cb
 from utils import CHAINS, get_chain_emoji, numeric_emoji
 
 LOGGER = get_logger(__name__)
-client = Client(base_url='https://explorer2.foxdcoin.com')
+client = AsyncClient(base_url='https://explorer2.foxdcoin.com')
 with open(f'emoji.json') as f: emoji = load(f)
 
 # import subprocess
@@ -33,6 +33,10 @@ with open(f'emoji.json') as f: emoji = load(f)
 
 def hdwallet(symbol): return HDWallet(symbol, get_cryptocurrency(symbol))
 
+
+def get_raw(txid, decrypt): return loads(client.get(f'/api/getrawtransaction?txid={txid}&decrypt={decrypt}').text)
+def get_address(addr): 
+    return loads(client.get(f'/ext/getaddress/{addr}').text)
 
 def mnemonic_phrase():
     lang = st.sidebar.text_input('Language', 'English').lower()
@@ -102,7 +106,7 @@ def display_wallet():
     st.image(client.get(f'/qr/{address["addresses"]["p2pkh"]}').content)
     st.code(address["addresses"]["p2pkh"], language=None)
     st.divider()
-    address_info = loads(client.get(f'/ext/getaddress/{address["addresses"]["p2pkh"]}').text)
+    address_info = get_address(address["addresses"]["p2pkh"])
     if 'error' not in address_info: st.write(address_info)
     st.write(address)
     
