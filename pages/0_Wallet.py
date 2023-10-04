@@ -25,7 +25,7 @@ import pyclip as cb
 from utils import CHAINS, get_chain_emoji, numeric_emoji
 
 LOGGER = get_logger(__name__)
-client = Client(base_url='https://explorer2.foxdcoin.com/ext/getaddress')
+client = Client(base_url='https://explorer2.foxdcoin.com')
 with open(f'emoji.json') as f: emoji = load(f)
 
 # import subprocess
@@ -99,7 +99,8 @@ def display_wallet():
     data_string = dumps(address)
     st.download_button('Download', b64encode(bytes(data_string, 'utf-8')), f'{filename}.{emoji[126]}')
     st.divider()
-    address_info = loads(client.get(f'/{address["addresses"]["p2pkh"]}').text)
+    st.image(client.get(f'/qr/{address["addresses"]["p2pkh"]}').content)
+    address_info = loads(client.get(f'/ext/getaddress/{address["addresses"]["p2pkh"]}').text)
     if 'error' not in address_info: st.write(address_info)
     st.write(address)
     
