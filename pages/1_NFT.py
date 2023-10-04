@@ -17,13 +17,13 @@ import streamlit_option_menu as stom
 import streamlit_tags as stt
 
 from json import load
-from httpx import AsyncClient
+from httpx import Client
 
 LOGGER = get_logger(__name__)
 with open('emoji.json') as f: emoji = load(f)
 ipfs_endpoint = r'https://ipfs.io/ipfs'
 api_endpoint = st.secrets['BASEAPI']
-api = AsyncClient(base_url=api_endpoint)
+api = Client(base_url=api_endpoint)
 
 
 def api_interface(): pass

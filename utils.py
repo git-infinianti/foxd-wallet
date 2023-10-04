@@ -15,7 +15,7 @@
 import inspect
 import textwrap
 from json import load, loads
-from httpx import AsyncClient
+from httpx import Client
 from subprocess import run, PIPE
 import streamlit as st
 
@@ -110,7 +110,7 @@ def pipe(method: str, *args):
 class RPC:
     with open('commands.json') as f: commands = load(f)
     def __init__(self, port):
-        cli = AsyncClient(
+        cli = Client(
             auth = (RPCUSER, RPCPASS),
             headers = {'content-type': 'application/json'}
         )

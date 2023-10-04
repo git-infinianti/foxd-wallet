@@ -15,7 +15,7 @@ from io import BytesIO
 import streamlit as st
 from streamlit.logger import get_logger
 import streamlit_tags as stt
-from httpx import AsyncClient
+from httpx import Client
 from ipfs_api import publish, pin
 from json import load, loads
 from PIL import Image
@@ -32,7 +32,7 @@ h = {
     'accept': 'application/json'
 }
 endpoint = 'https://api.web3.storage'
-client = AsyncClient(base_url=endpoint, headers=h)
+client = Client(base_url=endpoint, headers=h)
 
 
 def encode_image():

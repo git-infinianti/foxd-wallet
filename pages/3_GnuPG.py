@@ -17,7 +17,7 @@ from streamlit.logger import get_logger
 from json import load, dumps
 from gnupg import GPG
 
-from httpx import AsyncClient
+from httpx import Client
 from binascii import crc32
 from hashlib import sha256
 from base64 import urlsafe_b64encode
@@ -25,7 +25,7 @@ from utils import CHAINS, FILETYPES, TAGTYPES, get_chain_emoji, numeric_emoji
 
 
 LOGGER = get_logger(__name__)
-client = AsyncClient()
+client = Client()
 with open('emoji.json') as f: emoji = load(f)
 gpg = GPG()
 

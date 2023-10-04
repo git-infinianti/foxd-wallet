@@ -20,12 +20,12 @@ from hdwallet.cryptocurrencies import get_cryptocurrency
 
 from json import dumps, load, loads
 from base64 import b64encode, b64decode
-from httpx import AsyncClient
+from httpx import Client
 import pyclip as cb
 from utils import CHAINS, get_chain_emoji, numeric_emoji
 
 LOGGER = get_logger(__name__)
-client = AsyncClient(base_url='https://explorer2.foxdcoin.com')
+client = Client(base_url='https://explorer2.foxdcoin.com')
 with open(f'emoji.json') as f: emoji = load(f)
 
 # import subprocess
