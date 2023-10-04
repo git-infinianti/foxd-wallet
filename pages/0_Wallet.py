@@ -101,6 +101,7 @@ def display_wallet():
     st.divider()
     st.image(client.get(f'/qr/{address["addresses"]["p2pkh"]}').content)
     st.code(address["addresses"]["p2pkh"], language=None)
+    st.divider()
     address_info = loads(client.get(f'/ext/getaddress/{address["addresses"]["p2pkh"]}').text)
     if 'error' not in address_info: st.write(address_info)
     st.write(address)
