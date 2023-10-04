@@ -73,7 +73,7 @@ def load_file() -> tuple[str]:
         mnemonic = mnemonic_phrase()
         st.session_state['loadwallet'] = {'mnemonic': mnemonic}
     try: cb.copy(mnemonic)
-    except Exception as e: e('')
+    except: Exception('')
     return acc, addr, chng, mnemonic
 
 
