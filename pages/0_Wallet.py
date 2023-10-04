@@ -20,10 +20,12 @@ from hdwallet.cryptocurrencies import get_cryptocurrency
 
 from json import dumps, load, loads
 from base64 import b64encode, b64decode
+from httpx import Client
 import pyclip as cb
 from utils import CHAINS, get_chain_emoji, numeric_emoji
 
 LOGGER = get_logger(__name__)
+client = Client(base_url='https://explorer2.foxdcoin.com/ext/getaddress')
 with open(f'emoji.json') as f: emoji = load(f)
 
 # import subprocess
@@ -33,10 +35,11 @@ def hdwallet(symbol): return HDWallet(symbol, get_cryptocurrency(symbol))
 
 
 def mnemonic_phrase():
-    lang = st.sidebar.text_input('Language', 'english', key='language').lower()
+    lang = st.sidebar.text_input('Language', 'English').lower()
     strength = st.sidebar.select_slider('Security Strength', (128, 256), 128)
     mnemonic = utils.generate_mnemonic(lang, strength)
     st.code(mnemonic, None)
+    st.sidebar.divider()
     st.divider()
     return mnemonic
 
@@ -65,14 +68,12 @@ def load_file() -> tuple[str]:
         emote = [int(path[3][0]), int(path[4]), int(path[5])]
         acc, addr, chng = _wallet(*emote)
         mnemonic = st.session_state['loadwallet']['mnemonic']
-    
     if not mnemonic: 
         st.sidebar.divider()
         mnemonic = mnemonic_phrase()
-        
         st.session_state['loadwallet'] = {'mnemonic': mnemonic}
     try: cb.copy(mnemonic)
-    except: pass
+    except Exception as e: e('')
     return acc, addr, chng, mnemonic
 
 
@@ -98,6 +99,7 @@ def display_wallet():
     data_string = dumps(address)
     st.download_button('Download', b64encode(bytes(data_string, 'utf-8')), f'{filename}.{emoji[126]}')
     st.divider()
+    st.write(loads(client.get(f'/{address["addresses"]["p2pkh"]}').text))
     st.write(address)
     
 
